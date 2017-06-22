@@ -25,7 +25,7 @@
     <Separator prefWidth="200.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="165.0" />
 
     <VBox fx:id="radioVBox" spacing="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="170.0"/>
-    <Button disable="true" mnemonicParsing="false" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="240.0" text="Generate"/>
-    <Separator prefWidth="200.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="270.0" />
+    <Button fx:id="genButton" disable="true" mnemonicParsing="false" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="290.0" text="Generate"/>
+    <Separator prefWidth="200.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="320.0" />
 
 </AnchorPane>

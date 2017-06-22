@@ -1,5 +1,6 @@
 import javafx.fxml.FXML;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.TextField;
 import org.controlsfx.control.Notifications;
 
 import java.util.Objects;
@@ -15,7 +16,7 @@ public class Controller {
     public void initialize() {
         controlBarController.getTextField().textProperty().addListener((observable, oldValue, newValue) -> {
             if (Objects.equals(newValue, "")) return;
-            if (newValue.matches("\\d+$")) {
+            if (newValue.length() < 9 && newValue.matches("\\d+$")) {
                 Integer n = Integer.parseInt(newValue);
                 if (n >= 0 && n <= 250) {
                     arrayBarChartController.clear();
