@@ -8,6 +8,7 @@ public class ArrayBarChartController {
 
     private IntArray array;
 
+    @FXML
     public void initialize() {
         bc.setAnimated(false);
         bc.setBarGap(0);
