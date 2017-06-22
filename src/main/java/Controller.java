@@ -22,7 +22,7 @@ public class Controller {
                     arrayBarChartController.getBC().setCategoryGap(150.0 / n);
                     arrayBarChartController.getBC().layout();
                     for (int i = 0; i < n; i++) {
-                        arrayBarChartController.add(new XYChart.Data(Integer.toString(i), i + 1));
+                        arrayBarChartController.add(i + 1);
                     }
                 } else {
                     Notifications.create().title("Length error").text("Array size must be 1-250").showError();

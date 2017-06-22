@@ -4,21 +4,22 @@ import javafx.scene.chart.XYChart;
 
 public class ArrayBarChartController {
     @FXML
-    private BarChart bc;
+    private BarChart<String, Integer> bc;
 
-    private XYChart.Series arraySeries;
+    private IntArray array;
 
     public void initialize() {
         bc.setAnimated(false);
         bc.setBarGap(0);
-        arraySeries = new XYChart.Series();
-        arraySeries.setName("Array");
-        arraySeries.getData().add(new XYChart.Data("0", 1));
-        arraySeries.getData().add(new XYChart.Data("1", 2));
-        arraySeries.getData().add(new XYChart.Data("2", 3));
-        arraySeries.getData().add(new XYChart.Data("3", 4));
-        bc.getData().addAll(arraySeries);
-        ((XYChart.Data) arraySeries.getData().get(2)).getNode().setStyle("-fx-bar-fill: aqua;");
+        array = new IntArray();
+
+        array.addLast(1);
+        array.addLast(2);
+        array.addLast(3);
+        array.addLast(4);
+        array.updateBarChart(bc);
+        //((XYChart.Data) arraySeries.getData().get(2)).getNode().setStyle("-fx-bar-fill: aqua;");
+        array.changeColor(2, "aqua");
     }
 
     public BarChart getBC() {
@@ -26,14 +27,14 @@ public class ArrayBarChartController {
     }
 
     public void clear() {
-        arraySeries.getData().clear();
+        array.clear();
     }
 
     public void get(int i) {
     }
 
-    public void add(XYChart.Data data) {
-        arraySeries.getData().add(data);
+    public void add(int value) {
+        array.addLast(value);
     }
 
 }
