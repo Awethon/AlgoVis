@@ -1,3 +1,7 @@
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -23,6 +27,9 @@ public class ControlBarController {
     @FXML
     private Button genButton;
 
+    private ToggleGroup tg;
+    private TextField textArray;
+
     @FXML
     void initialize() {
         startButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/play3.png"))));
@@ -31,34 +38,43 @@ public class ControlBarController {
         resetButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/rotate.png"))));
 
         RadioButton[] rbs = new RadioButton[4];
-        ToggleGroup tg = new ToggleGroup();
+        tg = new ToggleGroup();
         rbs[0] = new RadioButton("Random");
         rbs[1] = new RadioButton("Almost sorted");
         rbs[2] = new RadioButton("Reversed");
         rbs[3] = new RadioButton("Custom");
         tg.getToggles().addAll(rbs);
+        rbs[0].setSelected(true);
         radioVBox.getChildren().addAll(rbs);
-        TextField textArray = new TextField();
+        textArray = new TextField();
         radioVBox.getChildren().add(textArray);
         textArray.setDisable(true);
-
-        genButton.setOnAction((e) -> {
-            String text = ((RadioButton)(tg.getSelectedToggle())).getText();
-            if (text != null) {
-                if (text.equals("Random")) {
-
-                } else if (text.equals("Almost sorted")) {
-
-                } else if (text.equals("Reversed")) {
-
-                } else if (text.equals("Custom")) {
-
-                };
+        tg.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if(((RadioButton)newValue).getText().equals("Custom")) {
+                textArray.setDisable(false);
+            } else {
+                textArray.setDisable(true);
             }
         });
     }
 
     public TextField getTextField() {
         return tf;
+    }
+
+    public void genButtonSetHandler(EventHandler<ActionEvent> value) {
+        genButton.setOnAction(value);
+    }
+
+    public Toggle getSelectedToggle(){
+        return tg.getSelectedToggle();
+    }
+
+    public TextField getTextArray() {
+        return textArray;
+    }
+
+    public Button getGenButton() {
+        return genButton;
     }
 }

@@ -27,15 +27,8 @@ public class ArrayBarChartController {
         return bc;
     }
 
-    public void clear() {
-        array.clear();
-    }
-
-    public void get(int i) {
-    }
-
-    public void add(int value) {
-        array.addLast(value);
+    public IntArray getArray() {
+        return array;
     }
 
 }
