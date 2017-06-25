@@ -63,7 +63,7 @@ public class MergeVisualizerViewModel implements IMediator {
     public boolean isGenerateButtonEnabled() {
         return generateButtonEnabled;
     }
-
+    //Вызывается при изменении поля с длиной последовательности
     public void setSequenceLength(String input) {
         if (input.equals("")) {
             generateButtonEnabled = false;
@@ -82,7 +82,7 @@ public class MergeVisualizerViewModel implements IMediator {
         sequenceLength = intInput;
         generateButtonEnabled = true;
     }
-
+    //Вызывается по нажатию клавиши generate
     public void generateSequence() {
 
         this.sequence = generator.generate(generationMode);
@@ -91,7 +91,7 @@ public class MergeVisualizerViewModel implements IMediator {
         startButtonEnabled = true;
         nextButtonEnabled = true;
     }
-
+    //Вызывается при изменении типа генератора
     public void setGenerationMode(String generationMode) {
 
         this.generationMode = generationMode;
@@ -139,6 +139,10 @@ public class MergeVisualizerViewModel implements IMediator {
         previousButtonEnabled = false;
         startButtonEnabled = true;
         nextButtonEnabled = true;
+    }
+
+    public int[] getSequence(){
+        return sequence;
     }
 
     @Override
