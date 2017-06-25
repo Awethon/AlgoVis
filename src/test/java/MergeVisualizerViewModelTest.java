@@ -3,9 +3,6 @@ import org.junit.Test;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
-/**
- * Created by alexthor on 25.06.17.
- */
 
 public class MergeVisualizerViewModelTest {
     @Test

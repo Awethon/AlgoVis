@@ -1,6 +1,4 @@
-/**
- * Created by alexthor on 23.06.17.
- */
+
 
 
 public class MergeVisualizerModel extends AbstractVisualizerModel {

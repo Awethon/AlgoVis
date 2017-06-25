@@ -1,6 +1,4 @@
-/**
- * Created by alexthor on 25.06.17.
- */
+
 public class SequenceGenerator implements ISequenceGenerator {
 
     @Override
