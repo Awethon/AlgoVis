@@ -9,6 +9,14 @@ public class StateSaverModel {
 
     private ArrayList<State> states;
 
+    /*public ArrayList<State> getStates() {
+        return this.states;
+    }*/
+
+    public int size(){
+        return states.size();
+    }
+
     public StateSaverModel() {
         states = new ArrayList<>();
     }

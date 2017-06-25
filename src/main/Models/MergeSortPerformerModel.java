@@ -21,13 +21,13 @@ public class MergeSortPerformerModel implements ISortPerformer {
             int middle = (left+right)/2;
             int[] first = MergeSort(sequence, left, middle);
             int[] second = MergeSort(sequence, middle + 1, right);
-            saveState(first, second, left, right);
             int[] result = Merge(first, second);
+            saveState(first, second, left, right, result);
             return result;
         }
-        int[] result = new int[] { sequence[left] };
-        saveState(result, null, left, right);
-        return result;
+        //int[] result = new int[] { sequence[left] };
+        //saveState(result, null, left, right);
+        return new int[] { sequence[left] };
     }
 
     private int[] Merge(int[] first, int[] second) {
@@ -65,8 +65,8 @@ public class MergeSortPerformerModel implements ISortPerformer {
         return result;
     }
 
-    private void saveState(int[] first, int[] second, int left, int right) {
-        saver.saveState(new State(first, second, left, right));
+    private void saveState(int[] first, int[] second, int left, int right, int[] result) {
+        saver.saveState(new State(first, second, left, right, result));
     }
 
     @Override

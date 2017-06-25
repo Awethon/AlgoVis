@@ -5,8 +5,8 @@ public class SequenceGenerator implements ISequenceGenerator {
 
     @Override
     public int[] generate(String generationMode) {
-        int[] result = new int[1];
-        result[0] = 1;
+        int[] result = new int[] {6, 5, 3, 1, 8, 7, 2, 4, 5};
+
         return result;
     }
 }

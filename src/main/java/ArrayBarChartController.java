@@ -15,12 +15,12 @@ public class ArrayBarChartController {
         array = new IntArray();
 
         array.addLast(1);
-        array.addLast(2);
+        array.addLast(5);
         array.addLast(3);
         array.addLast(4);
         array.updateBarChart(bc);
         //((XYChart.Data) arraySeries.getData().get(2)).getNode().setStyle("-fx-bar-fill: aqua;");
-        array.changeColor(2, "aqua");
+        //array.changeColor(2, "aqua");
     }
 
     public BarChart getBC() {

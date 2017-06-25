@@ -4,10 +4,16 @@
 
 public class MergeVisualizerViewModel implements IMediator {
 
+    //Генератор исходных данных
     ISequenceGenerator generator;
+    //Производит сортировку и сохраняет шаги в объект StateSaverModel
     ISortPerformer sortPerformer;
+    //Содержит шаги сортировки
     StateSaverModel model;
+    //Производит пошаговое прохождение сортировки и уведомляет о изменениях
     AbstractVisualizerModel visualizerModel;
+    //Производит принятие обновленных данных
+    IMediator view;
 
     private boolean startButtonEnabled = false;
     private boolean pauseButtonEnabled = false;
@@ -20,6 +26,10 @@ public class MergeVisualizerViewModel implements IMediator {
     private String generationMode;
 
     private int[] sequence;
+
+    public void setView(IMediator view){
+        this.view = view;
+    }
 
     public void setGenerator(ISequenceGenerator generator)
     {
@@ -84,16 +94,19 @@ public class MergeVisualizerViewModel implements IMediator {
 
     public void setGenerationMode(String generationMode) {
 
-        if(generationMode != "Random" && generationMode != "Almost sorted" && generationMode != "Reversed") {
+        this.generationMode = generationMode;
+        if(!generationMode.equals("Random")
+                && !generationMode.equals("Almost sorted")
+                && !generationMode.equals ("Reversed")) {
             generateButtonEnabled = false;
-            this.generationMode = generationMode;
+            //this.generationMode = generationMode;
             return;
         }
 
         generateButtonEnabled = true;
-        this.generationMode = generationMode;
+        //this.generationMode = generationMode;
     }
-
+    //Вызывается при нажатии start
     public void start() {
         startButtonEnabled = false;
         pauseButtonEnabled = true;
@@ -101,7 +114,7 @@ public class MergeVisualizerViewModel implements IMediator {
         previousButtonEnabled = false;
         abortButtonEnabled = true;
     }
-
+    //Вызывается при нажатии pause
     public void pause() {
         pauseButtonEnabled = false;
         startButtonEnabled = true;
@@ -109,17 +122,17 @@ public class MergeVisualizerViewModel implements IMediator {
         previousButtonEnabled = true;
 
     }
-
+    //Вызывается при нажатии next
     public void nextStep() {
         abortButtonEnabled = true;
         previousButtonEnabled = true;
 
     }
-
+    //Вызывается при нажатии previous
     public void previousStep() {
 
     }
-
+    //Вызывается при нажатии abort
     public void abort() {
         abortButtonEnabled = false;
         pauseButtonEnabled = false;
@@ -129,7 +142,17 @@ public class MergeVisualizerViewModel implements IMediator {
     }
 
     @Override
-    public void AcceptChanges(int newIndex, int oldIndex) {
+    public void acceptChanges(int firstIndex, int secondIndex, int state) {
+        view.acceptChanges(firstIndex, secondIndex, state);
+    }
 
+    @Override
+    public void mergePerformed(State state) {
+        view.mergePerformed(state);
+    }
+
+    @Override
+    public void mergeStarted(State state) {
+        view.mergeStarted(state);
     }
 }
