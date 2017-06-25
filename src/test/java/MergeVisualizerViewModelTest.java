@@ -50,13 +50,15 @@ public class MergeVisualizerViewModelTest {
     @Test
     public void generateButtonDisabledWhenEnterInvalidNumber(){
         MergeVisualizerViewModel viewModel = new MergeVisualizerViewModel();
-        viewModel.setSequenceLength("-1");
+        viewModel.setSequenceLength("6");
+        viewModel.setSequenceLength("drgdrg");
         assertFalse(viewModel.isGenerateButtonEnabled());
     }
 
     @Test
     public void generateButtonDisabledWhenClearNumber(){
         MergeVisualizerViewModel viewModel = new MergeVisualizerViewModel();
+        viewModel.setSequenceLength("6");
         viewModel.setSequenceLength("");
         assertFalse(viewModel.isGenerateButtonEnabled());
     }

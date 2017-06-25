@@ -11,7 +11,12 @@ import org.controlsfx.glyphfont.Glyph;
 
 import java.util.Objects;
 
-public class ControlBarController {
+public class ControlBarController implements IMediator {
+
+    @FXML
+    private ArrayBarChartController arrayBarChartController;
+    //@FXML
+    //private ControlBarController controlBarController;
     @FXML
     private TextField tf;
     @FXML
@@ -29,9 +34,14 @@ public class ControlBarController {
 
     private ToggleGroup tg;
     private TextField textArray;
-
+    private MergeVisualizerViewModel viewModel;
+    private String lengthFieldText = "";
     @FXML
     void initialize() {
+        viewModel = new MergeVisualizerViewModel();
+        viewModel.setGenerator(new SequenceGenerator());
+        viewModel.setSortPerformer(new MergeSortPerformerModel());
+        viewModel.setView(this);
         startButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/play3.png"))));
         pauseButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/pause2.png"))));
         nextButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/arrow-right2.png"))));
@@ -49,13 +59,57 @@ public class ControlBarController {
         textArray = new TextField();
         radioVBox.getChildren().add(textArray);
         textArray.setDisable(true);
+
         tg.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-            if(((RadioButton)newValue).getText().equals("Custom")) {
-                textArray.setDisable(false);
-            } else {
-                textArray.setDisable(true);
-            }
+            bind();
+            backBind();
         });
+
+        tf.textProperty().addListener((observable, oldValue, newValue) -> {
+            lengthFieldText = newValue;
+            bind();
+            backBind();
+        });
+
+        setButtonHandler(genButton, (e) -> {
+            viewModel.generateSequence();
+            backBind();
+        });
+
+        setButtonHandler(startButton, (e) -> {
+            viewModel.start();
+            backBind();
+        });
+
+        setButtonHandler(pauseButton, (e) -> {
+            viewModel.pause();
+            backBind();
+        });
+
+        setButtonHandler(nextButton, (e) -> {
+            viewModel.nextStep();
+            backBind();
+        });
+
+        setButtonHandler(resetButton, (e) -> {
+            viewModel.abort();
+            backBind();
+        });
+    }
+
+    private void bind() {
+        viewModel.setSequenceLength(tf.getText());
+        viewModel.setGenerationMode(((RadioButton)tg.getSelectedToggle()).getText());
+    }
+
+    private void backBind() {
+        textArray.setDisable(!viewModel.isCustomFieldEnabled());
+        tf.setDisable(!viewModel.isLengthFieldEnabled());
+        genButton.setDisable(!viewModel.isGenerateButtonEnabled());
+        startButton.setDisable(!viewModel.isStartButtonEnabled());
+        pauseButton.setDisable(!viewModel.isPauseButtonEnabled());
+        nextButton.setDisable(!viewModel.isNextButtonEnabled());
+        resetButton.setDisable(!viewModel.isAbortButtonEnabled());
     }
 
     public TextField getTextField() {
@@ -64,6 +118,10 @@ public class ControlBarController {
 
     public void genButtonSetHandler(EventHandler<ActionEvent> value) {
         genButton.setOnAction(value);
+    }
+
+    public void setButtonHandler(Button button, EventHandler<ActionEvent> value){
+        button.setOnAction(value);
     }
 
     public Toggle getSelectedToggle(){
@@ -76,5 +134,20 @@ public class ControlBarController {
 
     public Button getGenButton() {
         return genButton;
+    }
+
+    @Override
+    public void acceptChanges(int firstIndex, int secondIndex, int state) {
+
+    }
+
+    @Override
+    public void mergePerformed(State state) {
+
+    }
+
+    @Override
+    public void mergeStarted(State state) {
+
     }
 }

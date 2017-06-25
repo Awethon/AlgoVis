@@ -21,11 +21,14 @@ public class MergeVisualizerViewModel implements IMediator {
     private boolean previousButtonEnabled = false;
     private boolean nextButtonEnabled = false;
     private boolean generateButtonEnabled = false;
+    private boolean customFieldEnabled = false;
 
     private int sequenceLength = 0;
     private String generationMode;
 
     private int[] sequence;
+    private boolean lengthFieldEnabled = true;
+
 
     public void setView(IMediator view){
         this.view = view;
@@ -63,6 +66,14 @@ public class MergeVisualizerViewModel implements IMediator {
     public boolean isGenerateButtonEnabled() {
         return generateButtonEnabled;
     }
+
+    public boolean isCustomFieldEnabled(){
+        return customFieldEnabled;
+    }
+
+    public boolean isLengthFieldEnabled(){
+        return lengthFieldEnabled;
+    }
     //Вызывается при изменении поля с длиной последовательности
     public void setSequenceLength(String input) {
         if (input.equals("")) {
@@ -95,15 +106,15 @@ public class MergeVisualizerViewModel implements IMediator {
     public void setGenerationMode(String generationMode) {
 
         this.generationMode = generationMode;
-        if(!generationMode.equals("Random")
-                && !generationMode.equals("Almost sorted")
-                && !generationMode.equals ("Reversed")) {
+        if(generationMode.equals("Custom")) {
             generateButtonEnabled = false;
-            //this.generationMode = generationMode;
+            customFieldEnabled = true;
+            lengthFieldEnabled = false;
             return;
         }
-
+        customFieldEnabled = false;
         generateButtonEnabled = true;
+        lengthFieldEnabled = true;
         //this.generationMode = generationMode;
     }
     //Вызывается при нажатии start
