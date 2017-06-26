@@ -19,7 +19,7 @@ public class MergeVisualizerViewModel implements IMediator {
     private boolean nextButtonEnabled = false;
     private boolean generateButtonEnabled = false;
     private boolean customFieldEnabled = false;
-
+    private boolean startButtonWasClicked = false;
     private int sequenceLength = 0;
     private String generationMode;
 
@@ -125,7 +125,10 @@ public class MergeVisualizerViewModel implements IMediator {
         nextButtonEnabled = false;
         previousButtonEnabled = false;
         abortButtonEnabled = true;
-
+        if(startButtonWasClicked)
+            visualizerModel.continueProcess();
+        else
+            visualizerModel.run();
     }
     //Вызывается при нажатии pause
     public void pause() {

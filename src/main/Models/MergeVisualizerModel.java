@@ -21,28 +21,36 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
             int iter1 = 0, iter2 = 0, firstLength = first.length, secondLength = second.length, left = state.getLeft();
             mediator.mergeStarted(state);
             while (iter1 < firstLength && iter2 < secondLength) {
+                setOnPause();
                 if (first[iter1] <= second[iter2]) {
                     iter1++;
                 } else {
                     iter2++;
                 }
-                mediator.acceptChanges(left + iter1, left + iter2, currentState);
+                mediator.acceptChanges(left + iter1, left + firstLength + iter2, currentState);
             }
             while (iter1 < firstLength) {
+                setOnPause();
                 iter1++;
-                mediator.acceptChanges(left + iter1, left + iter2, currentState);
+                mediator.acceptChanges(left + iter1, left + firstLength + iter2, currentState);
             }
             while (iter2 < secondLength) {
+                setOnPause();
                 iter2++;
-                mediator.acceptChanges(left + iter1, left + iter2, currentState);
+                mediator.acceptChanges(left + iter1, left + firstLength + iter2, currentState);
             }
             mediator.mergePerformed(state);
         }
     }
 
     @Override
-    public void run(){
+    public void interrupt(){
 
+    }
+
+    @Override
+    public void run(){
+        mergePerfom();
     }
 
     @Override
@@ -75,5 +83,14 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
 
     }
 
-
+    public void setOnPause(){
+        while (onPause) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                mediator.resetCalled();
+                return;
+            }
+        }
+    }
 }
