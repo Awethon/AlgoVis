@@ -40,9 +40,13 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
         }
     }
 
+    @Override
+    public void run(){
+
+    }
 
     @Override
-    public void start() {
+    public void startVisualize() {
         mergePerfom();
     }
 

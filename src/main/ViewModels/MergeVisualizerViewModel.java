@@ -118,7 +118,7 @@ public class MergeVisualizerViewModel implements IMediator {
         lengthFieldEnabled = true;
         //this.generationMode = generationMode;
     }
-    //Вызывается при нажатии start
+    //Вызывается при нажатии startVisualize
     public void start() {
         startButtonEnabled = false;
         pauseButtonEnabled = true;
