@@ -19,9 +19,20 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
             SortState state = states.getState(currentState);
             int[] first = state.getFirst(), second = state.getSecond();
             int iter1 = 0, iter2 = 0, firstLength = first.length, secondLength = second.length, left = state.getLeft();
+            if (Thread.interrupted())
+                return;
             mediator.mergeStarted(state);
             while (iter1 < firstLength && iter2 < secondLength) {
-                setOnPause();
+                while (onPause) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        mediator.resetCalled();
+                        return;
+                    }
+                }
+                if (Thread.interrupted())
+                    return;
                 if (first[iter1] <= second[iter2]) {
                     iter1++;
                 } else {
@@ -30,22 +41,35 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
                 mediator.acceptChanges(left + iter1, left + firstLength + iter2, currentState);
             }
             while (iter1 < firstLength) {
-                setOnPause();
+                while (onPause) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        mediator.resetCalled();
+                        return;
+                    }
+                }
+                if (Thread.interrupted())
+                    return;
                 iter1++;
                 mediator.acceptChanges(left + iter1, left + firstLength + iter2, currentState);
             }
             while (iter2 < secondLength) {
-                setOnPause();
+                while (onPause) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        mediator.resetCalled();
+                        return;
+                    }
+                }
+                if (Thread.interrupted())
+                    return;
                 iter2++;
                 mediator.acceptChanges(left + iter1, left + firstLength + iter2, currentState);
             }
             mediator.mergePerformed(state);
         }
-    }
-
-    @Override
-    public void interrupt(){
-
     }
 
     @Override
@@ -81,16 +105,5 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
     @Override
     public void abort() {
 
-    }
-
-    public void setOnPause(){
-        while (onPause) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                mediator.resetCalled();
-                return;
-            }
-        }
     }
 }
