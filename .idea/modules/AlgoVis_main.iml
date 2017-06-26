@@ -6,10 +6,8 @@
     <content url="file://$MODULE_DIR$/../../src/main">
       <sourceFolder url="file://$MODULE_DIR$/../../src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../src/main/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../src/main/Models" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../src/main/ViewModels" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../src/main/Views" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../src/main/Controllers" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/Models" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

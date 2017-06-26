@@ -16,7 +16,7 @@ public class MergeSortPerformerModel implements ISortPerformer {
     private int[] MergeSort(int[] sequence, int left, int right) {
         if(left < right)
         {
-            int middle = (left+right)/2;
+            int middle = (left + right)/2;
             int[] first = MergeSort(sequence, left, middle);
             int[] second = MergeSort(sequence, middle + 1, right);
             int[] result = Merge(first, second);

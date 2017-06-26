@@ -18,7 +18,7 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
 
     private void mergePerfom(){
         for(currentState = 0; currentState < states.size(); currentState++) {
-            State state = states.getState(currentState);
+            SortState state = states.getState(currentState);
             int[] first = state.getFirst(), second = state.getSecond();
             int iter1 = 0, iter2 = 0, firstLength = first.length, secondLength = second.length, left = state.getLeft();
             mediator.mergeStarted(state);
@@ -28,15 +28,15 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
                 } else {
                     iter2++;
                 }
-                mediator.acceptChanges(left + iter1, left + iter2, currentState);
+                mediator.updateChanges(left + iter1, left + iter2, currentState);
             }
             while (iter1 < firstLength) {
                 iter1++;
-                mediator.acceptChanges(left + iter1, left + iter2, currentState);
+                mediator.updateChanges(left + iter1, left + iter2, currentState);
             }
             while (iter2 < secondLength) {
                 iter2++;
-                mediator.acceptChanges(left + iter1, left + iter2, currentState);
+                mediator.updateChanges(left + iter1, left + iter2, currentState);
             }
             mediator.mergePerformed(state);
         }
@@ -69,9 +69,13 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
     }
 
     @Override
-    public void abort() {
+    public void reset() {
 
     }
 
+    @Override
+    public void startVisualize() {
+
+    }
 
 }

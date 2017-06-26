@@ -8,8 +8,8 @@ public class ArrayBarChartController implements IMediator {
 
     private IntArray array;
 
-    int first = -1;
-    int second = -1;
+    private int first = -1;
+    private int second = -1;
 
     @FXML
     public void initialize() {
@@ -47,7 +47,7 @@ public class ArrayBarChartController implements IMediator {
     }
 
     @Override
-    public void mergePerformed(State state) {
+    public void mergePerformed(SortState state) {
         int[] arr = state.getResult();
         for (int i = state.getLeft(); i <= state.getRight(); i++) {
             array.set(i, arr[i - state.getLeft()]);
@@ -56,7 +56,7 @@ public class ArrayBarChartController implements IMediator {
     }
 
     @Override
-    public void mergeStarted(State state) {
+    public void mergeStarted(SortState state) {
         int lo = state.getLeft();
         int mid = state.getFirst().length;
         int hi = state.getRight();
@@ -69,5 +69,10 @@ public class ArrayBarChartController implements IMediator {
             array.set(i, state.getSecond()[i - mid]);
             array.changeColor(i, "red");
         }
+    }
+
+    @Override
+    public void resetCalled() {
+
     }
 }
