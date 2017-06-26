@@ -47,7 +47,7 @@ public class ArrayBarChartController implements IMediator{
             second = secondIndex;
         });
         try {
-            Thread.sleep(100);
+            Thread.sleep(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -63,7 +63,7 @@ public class ArrayBarChartController implements IMediator{
             }
         });
         try {
-            Thread.sleep(100);
+            Thread.sleep(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -89,7 +89,7 @@ public class ArrayBarChartController implements IMediator{
             }
         });
         try {
-            Thread.sleep(100);
+            Thread.sleep(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -99,6 +99,20 @@ public class ArrayBarChartController implements IMediator{
 
     @Override
     public void resetCalled() {
+        Platform.runLater(() -> {
+            bindSequence(viewModel.getSequence());
+        });
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void bindSequence(int[] sequence){
+        IntArray array = getArray();
+        array.clear();
+        for (int i = 0; i < sequence.length; i++)
+            array.addLast(sequence[i]);
     }
 }
