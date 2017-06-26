@@ -5,14 +5,14 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
 
     private int currentState;
     private boolean onPause;
-    private boolean onReset;
+    private boolean onAbortion;
     private IMediator mediator;
     private StateSaverModel states;
 
     public MergeVisualizerModel(IMediator mediator) {
         currentState = 0;
         onPause = true;
-        onReset = false;
+        onAbortion = false;
         this.mediator = mediator;
     }
 
@@ -28,15 +28,15 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
                 } else {
                     iter2++;
                 }
-                mediator.updateChanges(left + iter1, left + iter2, currentState);
+                mediator.acceptChanges(left + iter1, left + iter2, currentState);
             }
             while (iter1 < firstLength) {
                 iter1++;
-                mediator.updateChanges(left + iter1, left + iter2, currentState);
+                mediator.acceptChanges(left + iter1, left + iter2, currentState);
             }
             while (iter2 < secondLength) {
                 iter2++;
-                mediator.updateChanges(left + iter1, left + iter2, currentState);
+                mediator.acceptChanges(left + iter1, left + iter2, currentState);
             }
             mediator.mergePerformed(state);
         }
@@ -69,7 +69,7 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
     }
 
     @Override
-    public void reset() {
+    public void abort() {
 
     }
 

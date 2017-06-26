@@ -1,5 +1,5 @@
 
-public abstract class AbstractVisualizerModel implements ISortVisualizer {
+public abstract class AbstractVisualizerModel extends Thread implements ISortVisualizer {
 
     private int[] sequence;
 

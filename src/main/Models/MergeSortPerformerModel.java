@@ -64,7 +64,7 @@ public class MergeSortPerformerModel implements ISortPerformer {
     }
 
     private void saveState(int[] first, int[] second, int left, int right, int[] result) {
-        saver.saveState(new State(first, second, left, right, result));
+        saver.saveState(new SortState(first, second, left, right, result));
     }
 
     @Override

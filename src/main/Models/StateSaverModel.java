@@ -2,25 +2,25 @@ import java.util.ArrayList;
 
 public class StateSaverModel {
 
-    private ArrayList<State> states;
+    private ArrayList<SortState> sortStates;
 
-    /*public ArrayList<State> getStates() {
-        return this.states;
+    /*public ArrayList<SortState> getStates() {
+        return this.sortStates;
     }*/
 
     public int size(){
-        return states.size();
+        return sortStates.size();
     }
 
     public StateSaverModel() {
-        states = new ArrayList<>();
+        sortStates = new ArrayList<>();
     }
 
-    public State getState(int index) {
-        return states.get(index);
+    public SortState getState(int index) {
+        return sortStates.get(index);
     }
 
-    public void saveState(State state) {
-        this.states.add(state);
+    public void saveState(SortState sortState) {
+        this.sortStates.add(sortState);
     }
 }
