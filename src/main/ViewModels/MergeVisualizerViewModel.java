@@ -164,13 +164,13 @@ public class MergeVisualizerViewModel implements IMediator {
     }
 
     @Override
-    public void mergePerformed(State state) {
-        view.mergePerformed(state);
+    public void mergePerformed(SortState sortState) {
+        view.mergePerformed(sortState);
     }
 
     @Override
-    public void mergeStarted(State state) {
-        view.mergeStarted(state);
+    public void mergeStarted(SortState sortState) {
+        view.mergeStarted(sortState);
     }
 
     @Override

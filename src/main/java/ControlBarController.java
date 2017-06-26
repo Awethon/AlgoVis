@@ -1,5 +1,3 @@
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -7,9 +5,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import org.controlsfx.glyphfont.Glyph;
-
-import java.util.Objects;
 
 public class ControlBarController implements IMediator {
 
@@ -142,17 +137,17 @@ public class ControlBarController implements IMediator {
     }
 
     @Override
-    public void mergePerformed(State state) {
+    public void mergePerformed(SortState sortState) {
 
     }
 
     @Override
-    public void mergeStarted(State state) {
+    public void mergeStarted(SortState sortState) {
 
     }
 
     @Override
     public void resetCalled() {
-        
+
     }
 }

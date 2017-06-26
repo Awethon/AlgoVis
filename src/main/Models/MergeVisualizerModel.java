@@ -1,6 +1,4 @@
 
-
-
 public class MergeVisualizerModel extends AbstractVisualizerModel {
 
     private volatile int currentState;
@@ -18,7 +16,7 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
 
     private void mergePerfom(){
         for(currentState = 0; currentState < states.size(); ++currentState) {
-            State state = states.getState(currentState);
+            SortState state = states.getState(currentState);
             int[] first = state.getFirst(), second = state.getSecond();
             int iter1 = 0, iter2 = 0, firstLength = first.length, secondLength = second.length, left = state.getLeft();
             mediator.mergeStarted(state);
