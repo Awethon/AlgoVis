@@ -1,5 +1,5 @@
 
 public interface ISortPerformer {
-    void setSequence(int[] sequence);
+    void setArray(int[] array);
     StateSaverModel performSort();
 }

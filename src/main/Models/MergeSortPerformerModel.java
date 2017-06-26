@@ -5,8 +5,8 @@ public class MergeSortPerformerModel implements ISortPerformer {
     private int[] sequence;
 
     @Override
-    public void setSequence(int[] sequence){
-        this.sequence = sequence;
+    public void setArray(int[] array){
+        this.sequence = array;
     }
 
     public MergeSortPerformerModel() {

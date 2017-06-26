@@ -9,7 +9,7 @@ public interface IMediator {
      * @param secondIndex индекс во втором подмассиве
      * @param state номер текущего шага, по нему можно получить текущее состояние из viewModel
      * */
-    void acceptChanges(int firstIndex, int secondIndex, int state);
+    void updateChanges(int firstIndex, int secondIndex, int state);
 
     /**
      * Вызывается, когда завершается метод Merge, т.е. два подмассива были объедены,
