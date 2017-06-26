@@ -6,10 +6,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
-public class ControlBarController implements IMediator {
+public class ControlBarController {
 
-    @FXML
-    private ArrayBarChartController arrayBarChartController;
+    //@FXML
+    public ArrayBarChartController arrayBarChartController;
     //@FXML
     //private ControlBarController controlBarController;
     @FXML
@@ -29,15 +29,14 @@ public class ControlBarController implements IMediator {
 
     private ToggleGroup tg;
     private TextField textArray;
-    private MergeVisualizerViewModel viewModel;
+    public MergeVisualizerViewModel viewModel;
     private String lengthFieldText = "";
     @FXML
     void initialize() {
         viewModel = new MergeVisualizerViewModel();
         viewModel.setGenerator(new SequenceGenerator());
         viewModel.setSortPerformer(new MergeSortPerformerModel());
-        viewModel.setView(this);
-        viewModel.setVisualizerModel(new MergeVisualizerModel(viewModel));
+        //viewModel.setVisualizerModel(new MergeVisualizerModel(viewModel));
         startButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/play3.png"))));
         pauseButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/pause2.png"))));
         nextButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/arrow-right2.png"))));
@@ -69,6 +68,7 @@ public class ControlBarController implements IMediator {
 
         setButtonHandler(genButton, (e) -> {
             viewModel.generateSequence();
+            bindSequence(viewModel.getSequence());
             backBind();
         });
 
@@ -108,6 +108,13 @@ public class ControlBarController implements IMediator {
         resetButton.setDisable(!viewModel.isAbortButtonEnabled());
     }
 
+    private void bindSequence(int[] sequence){
+        IntArray array = arrayBarChartController.getArray();
+        array.clear();
+        for (int i = 0; i < sequence.length; i++)
+            array.addLast(sequence[i]);
+    }
+
     public TextField getTextField() {
         return tf;
     }
@@ -132,23 +139,4 @@ public class ControlBarController implements IMediator {
         return genButton;
     }
 
-    @Override
-    public void acceptChanges(int firstIndex, int secondIndex, int state) {
-        int i = 0;//arrayBarChartController.getArray().changeColor(0, "aqua");
-    }
-
-    @Override
-    public void mergePerformed(SortState sortState) {
-        int i = 0;// arrayBarChartController.getArray().changeColor(1, "aqua");
-    }
-
-    @Override
-    public void mergeStarted(SortState sortState) {
-        int i = 0;//arrayBarChartController.getArray().changeColor(2, "aqua");
-    }
-
-    @Override
-    public void resetCalled() {
-        int i = 0;//arrayBarChartController.getArray().changeColor(3, "aqua");
-    }
 }

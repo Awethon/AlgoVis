@@ -2,8 +2,10 @@
 public class MergeVisualizerModel extends AbstractVisualizerModel {
 
     private volatile int currentState;
+    private volatile boolean onNextState = false;
+    private volatile boolean onPreviousState = false;
     private volatile boolean onPause;
-    private volatile boolean onAbortion;
+    private volatile boolean onAbortion = false;
     private IMediator mediator;
     //private StateSaverModel states;
 
@@ -20,20 +22,20 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
             int[] first = state.getFirst(), second = state.getSecond();
             int iter1 = 0, iter2 = 0, firstLength = first.length, secondLength = second.length,
                     left = state.getLeft(), targetIter1, targetIter2;
-            if (Thread.interrupted())
+            if (onAbortion) {
                 return;
+            }
             mediator.mergeStarted(state);
+            if(checkNextState(state))
+                continue;
             while (iter1 < firstLength && iter2 < secondLength) {
-                while (onPause) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        mediator.resetCalled();
-                        return;
-                    }
-                }
-                if (Thread.interrupted())
+                if(checkPause())
                     return;
+                if(checkNextState(state))
+                    continue;
+                if (onAbortion) {
+                    return;
+                }
                 if (first[iter1] <= second[iter2]) {
                     iter1++;
                 } else {
@@ -44,15 +46,11 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
                 mediator.acceptChanges(targetIter1, targetIter2, currentState);
             }
             while (iter1 < firstLength) {
-                while (onPause) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        mediator.resetCalled();
-                        return;
-                    }
-                }
-                if (Thread.interrupted())
+                if(checkPause())
+                    return;
+                if(checkNextState(state))
+                    continue;
+                if (onAbortion)
                     return;
                 iter1++;
                 targetIter1 = compareIndex(left, iter1, firstLength);
@@ -60,15 +58,11 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
                 mediator.acceptChanges(targetIter1, targetIter2, currentState);
             }
             while (iter2 < secondLength) {
-                while (onPause) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        mediator.resetCalled();
-                        return;
-                    }
-                }
-                if (Thread.interrupted())
+                if(checkPause())
+                    return;
+                if(checkNextState(state))
+                    continue;
+                if (onAbortion)
                     return;
                 iter2++;
                 targetIter1 = compareIndex(left, iter1, firstLength);
@@ -84,6 +78,27 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
             return left + index;
         else
             return left + length - 1;
+    }
+
+    boolean checkPause() {
+        while (onPause) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    boolean checkNextState(SortState state) {
+        if(onNextState) {
+            mediator.mergePerformed(state);
+            onNextState = false;
+            onPause = true;
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -109,7 +124,7 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
 
     @Override
     public void nextStep() {
-
+        onPause = false;
     }
 
     @Override
@@ -119,6 +134,8 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
 
     @Override
     public void abort() {
-
+        onAbortion = true;
+        mediator.resetCalled();
+        interrupt();
     }
 }

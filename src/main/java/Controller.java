@@ -13,46 +13,25 @@ public class Controller{
     @FXML
     private ControlBarController controlBarController;
 
+    private MergeVisualizerViewModel viewModel;
 
     @FXML
     public void initialize() {
-
+        viewModel = controlBarController.viewModel;
+        controlBarController.arrayBarChartController = this.arrayBarChartController;
+        arrayBarChartController.viewModel = viewModel;
+        viewModel.setView(arrayBarChartController);
         controlBarController.getTextField().textProperty().addListener((observable, oldValue, newValue) -> {
-            if (Objects.equals(newValue, "")) {
-                controlBarController.getGenButton().setDisable(true);
-                return;
-            }
-            if (newValue.length() < 9 && newValue.matches("\\d+$")) {
-                Integer n = Integer.parseInt(newValue);
-
-                if (n >= 0 && n <= 250) {
-                    /*arrayBarChartController.getArray().clear();
-                    arrayBarChartController.getBC().setCategoryGap(150.0 / n);
-                    arrayBarChartController.getBC().layout();
-                    for (int i = 0; i < n; i++) {
-                        arrayBarChartController.getArray().addLast(i + 1);
-                    }
-                    controlBarController.getGenButton().setDisable(false);*/
-                } else {
-                    controlBarController.getGenButton().setDisable(true);
-                    Notifications.create().title("Length error").text("Array size must be 1-250").showError();
-                }
-            } else {
-                controlBarController.getGenButton().setDisable(true);
-                Notifications.create().title("Input data error").text("Field must be filled with number from 1 to 250").showError();
-            }
+            bind();
+            backBind();
         });
-/*
-        controlBarController.genButtonSetHandler((e) -> {
-            String text = ((RadioButton) (controlBarController.getSelectedToggle())).getText();
-            if (text.equals("Random")) {
+    }
 
-            } else if (text.equals("Almost sorted")) {
+    private void bind(){
+        viewModel.setSequenceLength(controlBarController.getTextField().getText());
+    }
 
-            } else if (text.equals("Reversed")) {
-
-
-            }
-        });*/
+    private void backBind(){
+        controlBarController.getTextField().setDisable(!viewModel.isLengthFieldEnabled());
     }
 }

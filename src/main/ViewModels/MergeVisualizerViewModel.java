@@ -93,7 +93,7 @@ public class MergeVisualizerViewModel implements IMediator {
         }
         Integer intInput = Integer.parseInt(input);
 
-        if (intInput <= 0 && intInput > 250) {
+        if (intInput <= 0 || intInput > 250) {
             generateButtonEnabled = false;
             sequenceLength = 0;
             return;
@@ -103,11 +103,11 @@ public class MergeVisualizerViewModel implements IMediator {
     }
     //Вызывается по нажатию клавиши generate
     public void generateSequence() {
-
         this.sequence = generator.generate(generationMode, sequenceLength);
         sortPerformer.setSequence(this.sequence);
         model = sortPerformer.performSort();
-        visualizerModel.setSortStates(model);
+        //setVisualizerModel(new MergeVisualizerModel(this));
+        //visualizerModel.setSortStates(model);
         startButtonEnabled = true;
         nextButtonEnabled = true;
     }
@@ -134,11 +134,16 @@ public class MergeVisualizerViewModel implements IMediator {
         nextButtonEnabled = false;
         previousButtonEnabled = false;
         abortButtonEnabled = true;
+        generateButtonEnabled = false;
+        lengthFieldEnabled = false;
         if(startButtonWasClicked)
             visualizerModel.continueProcess();
-        else
-            visualizerModel.run();
-            //visualizerModel.start();
+        else {
+            startButtonWasClicked = true;
+            setVisualizerModel(new MergeVisualizerModel(this));
+            visualizerModel.setSortStates(model);
+            visualizerModel.start();
+        }
     }
     //Вызывается при нажатии pause
     public void pause() {
@@ -148,10 +153,14 @@ public class MergeVisualizerViewModel implements IMediator {
         previousButtonEnabled = true;
         visualizerModel.pause();
     }
-    //Вызывается при нажатии next
+
+    /**
+     * Sounds good, doesn't work. Нужно разобраться с прохождением по шагам.
+     */
     public void nextStep() {
         abortButtonEnabled = true;
         previousButtonEnabled = true;
+        visualizerModel.nextStep();
     }
     //Вызывается при нажатии previous
     public void previousStep() {
@@ -164,8 +173,13 @@ public class MergeVisualizerViewModel implements IMediator {
         previousButtonEnabled = false;
         startButtonEnabled = true;
         nextButtonEnabled = true;
-        visualizerModel.interrupt();
+        lengthFieldEnabled = true;
+        if(visualizerModel.isAlive())
+            visualizerModel.abort();
+        else
+            resetCalled();
         startButtonWasClicked = false;
+        generateButtonEnabled = true;
     }
 
     public int[] getSequence(){
