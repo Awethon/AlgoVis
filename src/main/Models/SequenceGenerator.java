@@ -15,15 +15,15 @@ public class SequenceGenerator implements ISequenceGenerator {
         Random random = new Random();
         int[] result = new int[size];
         for (int i = 0; i < size; i++)
-            result[i] = random.nextInt();
+            result[i] = 15 + random.nextInt(100);
         return result;
     }
 
     private int[] generateReverse(int size)
     {
         int[] result = new int[size];
-        for (int i = size; i >= 0; i--)
-            result[i] = i;
+        for (int i = 0; i < size; i++)
+            result[i] = size - i + 1;
         return result;
     }
 }

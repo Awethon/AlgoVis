@@ -93,7 +93,7 @@ public class MergeVisualizerViewModel implements IMediator {
         }
         Integer intInput = Integer.parseInt(input);
 
-        if (intInput <= 0 && intInput > 250) {
+        if (intInput <= 0 || intInput > 250) {
             generateButtonEnabled = false;
             sequenceLength = 0;
             return;
@@ -103,11 +103,11 @@ public class MergeVisualizerViewModel implements IMediator {
     }
     //Вызывается по нажатию клавиши generate
     public void generateSequence() {
-
         this.sequence = generator.generate(generationMode, sequenceLength);
         sortPerformer.setSequence(this.sequence);
         model = sortPerformer.performSort();
-        visualizerModel.setSortStates(model);
+        //setVisualizerModel(new MergeVisualizerModel(this));
+        //visualizerModel.setSortStates(model);
         startButtonEnabled = true;
         nextButtonEnabled = true;
     }
@@ -136,9 +136,11 @@ public class MergeVisualizerViewModel implements IMediator {
         abortButtonEnabled = true;
         if(startButtonWasClicked)
             visualizerModel.continueProcess();
-        else
-            visualizerModel.run();
-            //visualizerModel.start();
+        else {
+            setVisualizerModel(new MergeVisualizerModel(this));
+            visualizerModel.setSortStates(model);
+            visualizerModel.start();
+        }
     }
     //Вызывается при нажатии pause
     public void pause() {
