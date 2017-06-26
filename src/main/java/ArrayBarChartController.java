@@ -40,13 +40,11 @@ public class ArrayBarChartController implements IMediator{
 
     @Override
     public void acceptChanges(int firstIndex, int secondIndex, int state) {
-        Platform.runLater(new Runnable() {
-            public void run() {
-                array.changeColor(firstIndex, "green");
-                array.changeColor(secondIndex, "green");
-                first = firstIndex;
-                second = secondIndex;
-            }
+        Platform.runLater(() -> {
+            array.changeColor(firstIndex, "green");
+            array.changeColor(secondIndex, "green");
+            first = firstIndex;
+            second = secondIndex;
         });
         try {
             Thread.sleep(100);
@@ -58,12 +56,10 @@ public class ArrayBarChartController implements IMediator{
     @Override
     public void mergePerformed(SortState state) {
         int[] arr = state.getResult();
-        Platform.runLater(new Runnable() {
-            public void run() {
-                for (int i = state.getLeft(); i <= state.getRight(); i++) {
-                    array.set(i, arr[i - state.getLeft()]);
-                    array.changeColor(i, "orange");
-                }
+        Platform.runLater(() -> {
+            for (int i = state.getLeft(); i <= state.getRight(); i++) {
+                array.set(i, arr[i - state.getLeft()]);
+                array.changeColor(i, "orange");
             }
         });
         try {
@@ -82,16 +78,14 @@ public class ArrayBarChartController implements IMediator{
         int mid = state.getFirst().length;
         int hi = state.getRight();
 
-        Platform.runLater(new Runnable() {
-            public void run() {
-                for (int i = 0; i < state.getFirst().length; i++) {
-                    array.set(i + state.getLeft(), state.getFirst()[i]);
-                    //array.changeColor(i, "yellow");
-                }
-                for (int i = 0; i < state.getSecond().length; i++) {
-                    array.set(i + state.getLeft() + state.getFirst().length, state.getSecond()[i]);
-                    //array.changeColor(i, "red");
-                }
+        Platform.runLater(() -> {
+            for (int i = 0; i < state.getFirst().length; i++) {
+                array.set(i + state.getLeft(), state.getFirst()[i]);
+                //array.changeColor(i, "yellow");
+            }
+            for (int i = 0; i < state.getSecond().length; i++) {
+                array.set(i + state.getLeft() + state.getFirst().length, state.getSecond()[i]);
+                //array.changeColor(i, "red");
             }
         });
         try {
