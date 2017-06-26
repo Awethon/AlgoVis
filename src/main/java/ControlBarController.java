@@ -150,4 +150,9 @@ public class ControlBarController implements IMediator {
     public void mergeStarted(State state) {
 
     }
+
+    @Override
+    public void resetCalled() {
+        
+    }
 }

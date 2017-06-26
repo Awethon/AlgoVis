@@ -3,9 +3,9 @@
 
 public class MergeVisualizerModel extends AbstractVisualizerModel {
 
-    private int currentState;
-    private boolean onPause;
-    private boolean onAbortion;
+    private volatile int currentState;
+    private volatile boolean onPause;
+    private volatile boolean onAbortion;
     private IMediator mediator;
     private StateSaverModel states;
 
@@ -17,7 +17,7 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
     }
 
     private void mergePerfom(){
-        for(currentState = 0; currentState < states.size(); currentState++) {
+        for(currentState = 0; currentState < states.size(); ++currentState) {
             State state = states.getState(currentState);
             int[] first = state.getFirst(), second = state.getSecond();
             int iter1 = 0, iter2 = 0, firstLength = first.length, secondLength = second.length, left = state.getLeft();
@@ -45,7 +45,7 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
 
     @Override
     public void start() {
-        onPause = false;
+        mergePerfom();
     }
 
     @Override

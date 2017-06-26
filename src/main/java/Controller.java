@@ -16,7 +16,7 @@ public class Controller{
 
     @FXML
     public void initialize() {
-        /*
+
         controlBarController.getTextField().textProperty().addListener((observable, oldValue, newValue) -> {
             if (Objects.equals(newValue, "")) {
                 controlBarController.getGenButton().setDisable(true);
@@ -41,7 +41,7 @@ public class Controller{
                 Notifications.create().title("Input data error").text("Field must be filled with number from 1 to 250").showError();
             }
         });
-
+/*
         controlBarController.genButtonSetHandler((e) -> {
             String text = ((RadioButton) (controlBarController.getSelectedToggle())).getText();
             if (text.equals("Random")) {
@@ -50,9 +50,8 @@ public class Controller{
 
             } else if (text.equals("Reversed")) {
 
-            } else if (text.equals("Custom")) {
 
             }
-        });          */
+        });*/
     }
 }

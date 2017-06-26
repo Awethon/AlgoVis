@@ -30,4 +30,9 @@ public interface IMediator {
      *              и результат операции Merge.
      */
     void mergeStarted(State state);
+
+    /**
+     * Вызывается, когда процесс визуализации был прерван методом abort() объекта ISortVisualizer.
+     */
+    void resetCalled();
 }

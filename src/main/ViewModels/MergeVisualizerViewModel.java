@@ -71,7 +71,11 @@ public class MergeVisualizerViewModel implements IMediator {
     public boolean isLengthFieldEnabled(){
         return lengthFieldEnabled;
     }
-    //Вызывается при изменении поля с длиной последовательности
+
+    /**
+     *
+     * @param input
+     */
     public void setSequenceLength(String input) {
         if (input.equals("")) {
             generateButtonEnabled = false;
@@ -121,6 +125,7 @@ public class MergeVisualizerViewModel implements IMediator {
         nextButtonEnabled = false;
         previousButtonEnabled = false;
         abortButtonEnabled = true;
+
     }
     //Вызывается при нажатии pause
     public void pause() {
@@ -166,5 +171,10 @@ public class MergeVisualizerViewModel implements IMediator {
     @Override
     public void mergeStarted(State state) {
         view.mergeStarted(state);
+    }
+
+    @Override
+    public void resetCalled() {
+        view.resetCalled();
     }
 }
