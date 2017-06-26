@@ -8,7 +8,7 @@ public class MergeVisualizerViewModel implements IMediator {
     //Содержит шаги сортировки
     StateSaverModel model;
     //Производит пошаговое прохождение сортировки и уведомляет о изменениях
-    AbstractVisualizerModel visualizerModel;
+    private AbstractVisualizerModel visualizerModel;
     //Производит принятие обновленных данных
     IMediator view;
 
@@ -38,6 +38,10 @@ public class MergeVisualizerViewModel implements IMediator {
 
     public void setSortPerformer(ISortPerformer sortPerformer){
         this.sortPerformer = sortPerformer;
+    }
+
+    public void setVisualizerModel(AbstractVisualizerModel visualizerModel) {
+        this.visualizerModel = visualizerModel;
     }
 
     public boolean isStartButtonEnabled() {
@@ -78,17 +82,20 @@ public class MergeVisualizerViewModel implements IMediator {
      */
     public void setSequenceLength(String input) {
         if (input.equals("")) {
+            sequenceLength = 0;
             generateButtonEnabled = false;
             return;
         }
         if (input.length() > 9 || !input.matches("\\d+$")) {
             generateButtonEnabled = false;
+            sequenceLength = 0;
             return;
         }
         Integer intInput = Integer.parseInt(input);
 
         if (intInput <= 0 && intInput > 250) {
             generateButtonEnabled = false;
+            sequenceLength = 0;
             return;
         }
         sequenceLength = intInput;
@@ -100,6 +107,7 @@ public class MergeVisualizerViewModel implements IMediator {
         this.sequence = generator.generate(generationMode);
         sortPerformer.setSequence(this.sequence);
         model = sortPerformer.performSort();
+        visualizerModel.setSortStates(model);
         startButtonEnabled = true;
         nextButtonEnabled = true;
     }
@@ -114,7 +122,8 @@ public class MergeVisualizerViewModel implements IMediator {
             return;
         }
         customFieldEnabled = false;
-        generateButtonEnabled = true;
+        if(sequenceLength != 0)
+            generateButtonEnabled = true;
         lengthFieldEnabled = true;
         //this.generationMode = generationMode;
     }
@@ -129,6 +138,7 @@ public class MergeVisualizerViewModel implements IMediator {
             visualizerModel.continueProcess();
         else
             visualizerModel.run();
+            //visualizerModel.start();
     }
     //Вызывается при нажатии pause
     public void pause() {
@@ -155,6 +165,7 @@ public class MergeVisualizerViewModel implements IMediator {
         startButtonEnabled = true;
         nextButtonEnabled = true;
         visualizerModel.interrupt();
+        startButtonWasClicked = false;
     }
 
     public int[] getSequence(){
@@ -180,4 +191,6 @@ public class MergeVisualizerViewModel implements IMediator {
     public void resetCalled() {
         view.resetCalled();
     }
+
+
 }

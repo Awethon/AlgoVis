@@ -24,14 +24,15 @@ public class Controller{
             }
             if (newValue.length() < 9 && newValue.matches("\\d+$")) {
                 Integer n = Integer.parseInt(newValue);
+
                 if (n >= 0 && n <= 250) {
-                    arrayBarChartController.getArray().clear();
+                    /*arrayBarChartController.getArray().clear();
                     arrayBarChartController.getBC().setCategoryGap(150.0 / n);
                     arrayBarChartController.getBC().layout();
                     for (int i = 0; i < n; i++) {
                         arrayBarChartController.getArray().addLast(i + 1);
                     }
-                    controlBarController.getGenButton().setDisable(false);
+                    controlBarController.getGenButton().setDisable(false);*/
                 } else {
                     controlBarController.getGenButton().setDisable(true);
                     Notifications.create().title("Length error").text("Array size must be 1-250").showError();

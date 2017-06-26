@@ -5,7 +5,7 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
     private volatile boolean onPause;
     private volatile boolean onAbortion;
     private IMediator mediator;
-    private StateSaverModel states;
+    //private StateSaverModel states;
 
     public MergeVisualizerModel(IMediator mediator) {
         currentState = 0;
@@ -14,11 +14,12 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
         this.mediator = mediator;
     }
 
-    private void mergePerfom(){
+    private void mergePerform(){
         for(currentState = 0; currentState < states.size(); ++currentState) {
             SortState state = states.getState(currentState);
             int[] first = state.getFirst(), second = state.getSecond();
-            int iter1 = 0, iter2 = 0, firstLength = first.length, secondLength = second.length, left = state.getLeft();
+            int iter1 = 0, iter2 = 0, firstLength = first.length, secondLength = second.length,
+                    left = state.getLeft(), targetIter1, targetIter2;
             if (Thread.interrupted())
                 return;
             mediator.mergeStarted(state);
@@ -38,7 +39,9 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
                 } else {
                     iter2++;
                 }
-                mediator.acceptChanges(left + iter1, left + firstLength + iter2, currentState);
+                targetIter1 = compareIndex(left, iter1, firstLength);
+                targetIter2 = compareIndex(left + firstLength, iter2, secondLength);
+                mediator.acceptChanges(targetIter1, targetIter2, currentState);
             }
             while (iter1 < firstLength) {
                 while (onPause) {
@@ -52,7 +55,9 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
                 if (Thread.interrupted())
                     return;
                 iter1++;
-                mediator.acceptChanges(left + iter1, left + firstLength + iter2, currentState);
+                targetIter1 = compareIndex(left, iter1, firstLength);
+                targetIter2 = compareIndex(left + firstLength, iter2, secondLength);
+                mediator.acceptChanges(targetIter1, targetIter2, currentState);
             }
             while (iter2 < secondLength) {
                 while (onPause) {
@@ -66,20 +71,30 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
                 if (Thread.interrupted())
                     return;
                 iter2++;
-                mediator.acceptChanges(left + iter1, left + firstLength + iter2, currentState);
+                targetIter1 = compareIndex(left, iter1, firstLength);
+                targetIter2 = compareIndex(left + firstLength, iter2, secondLength);
+                mediator.acceptChanges(targetIter1, targetIter2, currentState);
             }
             mediator.mergePerformed(state);
         }
     }
 
+    private int compareIndex(int left, int index, int length){
+        if(index < length)
+            return left + index;
+        else
+            return left + length - 1;
+    }
+
     @Override
     public void run(){
-        mergePerfom();
+        onPause = false;
+        mergePerform();
     }
 
     @Override
     public void startVisualize() {
-        mergePerfom();
+        mergePerform();
     }
 
     @Override
