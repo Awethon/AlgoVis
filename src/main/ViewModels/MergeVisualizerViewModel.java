@@ -136,7 +136,7 @@ public class MergeVisualizerViewModel implements IMediator {
         startButtonEnabled = true;
         nextButtonEnabled = true;
         previousButtonEnabled = true;
-
+        visualizerModel.pause();
     }
     //Вызывается при нажатии next
     public void nextStep() {
