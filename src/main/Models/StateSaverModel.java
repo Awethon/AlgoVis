@@ -2,11 +2,12 @@ import java.util.ArrayList;
 
 public class StateSaverModel {
 
-    private ArrayList<SortState> sortStates;
+    private volatile ArrayList<SortState> sortStates;
 
-    /*public ArrayList<SortState> getStates() {
-        return this.sortStates;
-    }*/
+    public void clear() {
+        if(sortStates != null)
+            sortStates.clear();
+    }
 
     public int size(){
         return sortStates.size();

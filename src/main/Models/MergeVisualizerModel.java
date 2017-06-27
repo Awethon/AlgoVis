@@ -6,7 +6,7 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
     private volatile boolean onPreviousState = false;
     private volatile boolean onPause;
     private volatile boolean onAbortion = false;
-    private IMediator mediator;
+    private volatile IMediator mediator;
     //private StateSaverModel states;
 
     public MergeVisualizerModel(IMediator mediator) {

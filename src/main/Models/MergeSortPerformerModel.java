@@ -6,6 +6,7 @@ public class MergeSortPerformerModel implements ISortPerformer {
 
     @Override
     public void setSequence(int[] sequence){
+        saver.clear();
         this.sequence = sequence;
     }
 

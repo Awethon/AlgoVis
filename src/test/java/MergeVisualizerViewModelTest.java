@@ -158,4 +158,66 @@ public class MergeVisualizerViewModelTest {
     }
 
 
+    private MergeVisualizerViewModel initializeViewModel(){
+        MergeVisualizerViewModel viewModel = new MergeVisualizerViewModel();
+        viewModel.setGenerator(new SequenceGenerator());
+        viewModel.setSortPerformer(new MergeSortPerformerModel());
+        viewModel.setVisualizerModel(new PuffVisualizer());
+        viewModel.setView(new PuffIMediator());
+        return  viewModel;
+    }
+    private class PuffVisualizer extends AbstractVisualizerModel {
+
+        @Override
+        public void startVisualize() {
+
+        }
+
+        @Override
+        public void pause() {
+
+        }
+
+        @Override
+        public void continueProcess() {
+
+        }
+
+        @Override
+        public void nextStep() {
+
+        }
+
+        @Override
+        public void previousStep() {
+
+        }
+
+        @Override
+        public void abort() {
+
+        }
+    }
+    private class PuffIMediator implements IMediator{
+
+        @Override
+        public void acceptChanges(int firstIndex, int secondIndex, int state) {
+
+        }
+
+        @Override
+        public void mergePerformed(SortState sortState) {
+
+        }
+
+        @Override
+        public void mergeStarted(SortState sortState) {
+
+        }
+
+        @Override
+        public void resetCalled() {
+
+        }
+    }
 }

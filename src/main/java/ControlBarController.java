@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 public class ControlBarController {
 
     //@FXML
-    public ArrayBarChartController arrayBarChartController;
+    public volatile ArrayBarChartController arrayBarChartController;
     //@FXML
     //private ControlBarController controlBarController;
     @FXML
@@ -29,7 +29,7 @@ public class ControlBarController {
 
     private ToggleGroup tg;
     private TextField textArray;
-    public MergeVisualizerViewModel viewModel;
+    public volatile MergeVisualizerViewModel viewModel;
     private String lengthFieldText = "";
     @FXML
     void initialize() {
@@ -59,6 +59,7 @@ public class ControlBarController {
             bind();
             backBind();
         });
+
 
         tf.textProperty().addListener((observable, oldValue, newValue) -> {
             lengthFieldText = newValue;

@@ -8,7 +8,7 @@ public class ArrayBarChartController implements IMediator{
     @FXML
     private BarChart<String, Integer> bc;
 
-    public MergeVisualizerViewModel viewModel;
+    public volatile MergeVisualizerViewModel viewModel;
 
     private IntArray array;
 
@@ -102,11 +102,12 @@ public class ArrayBarChartController implements IMediator{
         Platform.runLater(() -> {
             bindSequence(viewModel.getSequence());
         });
+        /*
         try {
             Thread.sleep(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     private void bindSequence(int[] sequence){

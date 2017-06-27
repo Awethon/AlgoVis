@@ -106,7 +106,7 @@ public class MergeVisualizerViewModel implements IMediator {
         this.sequence = generator.generate(generationMode, sequenceLength);
         sortPerformer.setSequence(this.sequence);
         model = sortPerformer.performSort();
-        //setVisualizerModel(new MergeVisualizerModel(this));
+        setVisualizerModel(new MergeVisualizerModel(this));
         //visualizerModel.setSortStates(model);
         startButtonEnabled = true;
         nextButtonEnabled = true;
