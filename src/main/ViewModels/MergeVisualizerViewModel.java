@@ -162,10 +162,6 @@ public class MergeVisualizerViewModel implements IMediator {
         previousButtonEnabled = true;
         generateButtonEnabled = false;
         lengthFieldEnabled = false;
-        if(visualizerModel.getCurrentState() == model.size()) {
-            nextButtonEnabled = false;
-            startButtonEnabled = false;
-        }
         if(!startButtonWasClicked){
             startButtonWasClicked = true;
             setVisualizerModel(new MergeVisualizerModel(this));
@@ -174,6 +170,10 @@ public class MergeVisualizerViewModel implements IMediator {
             visualizerModel.start();
         }
         visualizerModel.nextStep();
+        if(visualizerModel.getCurrentState() == model.size()) {
+            nextButtonEnabled = false;
+            startButtonEnabled = false;
+        }
     }
     //Вызывается при нажатии previous
     public void previousStep() {

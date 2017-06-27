@@ -91,11 +91,11 @@ public class ControlBarController {
             //viewModel.previousStep();
             backBind();
         });
-
+        /*
         setButtonHandler(previousButton, (e) ->{
             viewModel.previousStep();
             backBind();
-        });
+        });*/
 
         setButtonHandler(resetButton, (e) -> {
             viewModel.abort();
