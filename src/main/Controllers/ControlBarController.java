@@ -1,16 +1,16 @@
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import org.controlsfx.control.Notifications;
+
 
 public class ControlBarController {
 
     @FXML
-    private TextField tf;
+    private TextField sizeField;
     @FXML
     private Button startButton;
     @FXML
@@ -29,12 +29,18 @@ public class ControlBarController {
     private ToggleGroup tg;
     private TextField customTextArray;
 
+    private boolean startButtonClicked = false;
+
+    private StateSaverModel saver;
+
+    MergeVisualizerModel model;
+
     @FXML
     void initialize() {
         startButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/play3.png"))));
         pauseButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/pause2.png"))));
-        prevButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/arrow-left2.png"))));
-        nextButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/arrow-right2.png"))));
+        prevButton .setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/arrow-left2.png"))));
+        nextButton .setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/arrow-right2.png"))));
         resetButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/rotate.png"))));
 
         RadioButton[] rbs = new RadioButton[4];
@@ -55,87 +61,119 @@ public class ControlBarController {
         initializeEventHandlers();
     }
 
+    private static void setEnabled(Node node, boolean state) {
+        node.setDisable(!state);
+    }
+
     private void initializeEventHandlers() {
         tg.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if(getSelectedMode().equals("Custom")) {
-                setEnabled(tf,              false);
+                setEnabled(sizeField,              false);
                 setEnabled(customTextArray, true);
                 setEnabled(genButton,       false);
             } else {
-                setEnabled(tf,              true);
+                setEnabled(sizeField,              true);
                 setEnabled(customTextArray, false);
-                setEnabled(genButton,       true);
             }
         });
+    }
 
-        setButtonHandler(genButton, (e) -> {
-            //Controller.getViewModel().generateSequence();
-            setEnabled(startButton, true);
-            setEnabled(nextButton, true);
-        });
+    void initializeControlPanelHandlers(IMediator mediator) {
 
-        setButtonHandler(startButton, (e) -> {
-            //Controller.getViewModel().start();
+        startButton.setOnAction(e -> {
+            model = new MergeVisualizerModel(mediator);
+            if(startButtonClicked)
+                model.continueProcess();
+            else {
+                startButtonClicked = true;
+                model.setSortStates(saver);
+                model.start();
+            }
             setEnabled(startButton, false);
             setEnabled(pauseButton, true);
-            setEnabled(prevButton, false);
-            setEnabled(nextButton, false);
+            setEnabled(prevButton,  false);
+            setEnabled(nextButton,  false);
             setEnabled(resetButton, true);
         });
 
-        setButtonHandler(pauseButton, (e) -> {
-            //Controller.getViewModel().pause();
+        pauseButton.setOnAction(e -> {
+            model.pause();
             setEnabled(startButton, true);
             setEnabled(pauseButton, false);
-            setEnabled(prevButton, true);
-            setEnabled(nextButton, true);
+            setEnabled(prevButton,  true);
+            setEnabled(nextButton,  true);
         });
 
-        setButtonHandler(nextButton, (e) -> {
-            //Controller.getViewModel().nextStep();
-            setEnabled(prevButton, true);
+        // TODO: 26.06.2017 dis shet
+        prevButton.setOnAction(e -> {
+
+        });
+
+        nextButton.setOnAction(e -> {
+            model.nextStep();
+            setEnabled(prevButton,  true);
             setEnabled(resetButton, true);
         });
 
-        setButtonHandler(resetButton, (e) -> {
-            //Controller.getViewModel().reset();
+        resetButton.setOnAction(e -> {
+            if (model.isAlive()) {
+                model.reset();
+            } else mediator.resetCalled();
+            startButtonClicked = false;
             setEnabled(startButton, true);
             setEnabled(pauseButton, false);
-            setEnabled(prevButton, false);
-            setEnabled(nextButton, true);
+            setEnabled(prevButton,  false);
+            setEnabled(nextButton,  true);
             setEnabled(resetButton, false);
         });
     }
 
-    public TextField getTextField() {
-        return tf;
+    void setArraySizeFieldHandler(Command command) {
+        sizeField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() < 9 && newValue.matches("\\d+$")) {
+                Integer parsedArraySize = Integer.parseInt(newValue);
+                if (parsedArraySize >= 0 && parsedArraySize <= 250) {
+                    command.execute();
+                    genButton.setDisable(false);
+                } else {
+                    genButton.setDisable(true);
+                    Notifications.create().title("Length error").text("Array size must be 1-250").showError();
+                }
+            } else {
+                genButton.setDisable(true);
+                if (newValue.length() > 0)
+                    Notifications.create().title("Input data error").text("Field must be filled with number from 1 to 250").showError();
+            }
+        });
     }
 
-    public void genButtonSetHandler(EventHandler<ActionEvent> value) {
-        genButton.setOnAction(value);
-    }
+    void setGenButtonHandler(IntArray array) {
+        genButton.setOnAction(e -> {
 
-    public void setButtonHandler(Button button, EventHandler<ActionEvent> value){
-        button.setOnAction(value);
-    }
-
-    public Toggle getSelectedToggle(){
-        return tg.getSelectedToggle();
+            SortPerformer sorter = new MergeSortPerformerModel();
+            int[] arr = new IntArrayGenerator().generate(getParsedArraySize(), getSelectedMode());
+            array.copy(arr);
+            sorter.setArray(arr);
+            sorter.performSort();
+            saver = sorter.getSaver();
+            setEnabled(startButton, true);
+            setEnabled(nextButton,  true);
+        });
     }
 
     public TextField getCustomTextArray() {
         return customTextArray;
     }
 
-    public Button getGenButton() {
-        return genButton;
-    }
-
     public String getSelectedMode() {
-        return ((RadioButton)getSelectedToggle()).getText();
+        return ((RadioButton)tg.getSelectedToggle()).getText();
     }
 
-    public void setEnabled(Node node, boolean state) {
-        node.setDisable(!state);
+    public Integer getParsedArraySize() {
+        if (sizeField.getText().length() < 9 && sizeField.getText().matches("\\d+$")) {
+            return Integer.parseInt(sizeField.getText());
+        } else {
+            return -1;
+        }
     }
 }

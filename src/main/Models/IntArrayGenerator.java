@@ -1,14 +1,33 @@
+import java.util.Random;
 
 public class IntArrayGenerator {
     private int arraySize = 0;
     private String generationMode;
 
-    public IntArrayGenerator(int arraySize, String generationMode) {
-        this.arraySize = arraySize;
-        this.generationMode = generationMode;
+
+    public int[] generate(int arraySize, String generationMode) {
+        if(generationMode.equals("Random"))
+            return generateRandom(arraySize);
+        else
+            return generateReverse(arraySize);
     }
 
-    public int[] generate() {
-        return new int[] {6, 5, 3, 1, 8, 7, 2, 4, 5};
+    private int[] generateRandom(int size)
+    {
+        Random random = new Random();
+        int[] result = new int[size];
+        for (int i = 0; i < size; i++)
+            result[i] = 15 + random.nextInt(100);
+        Memento.save(result);
+        return result;
+    }
+
+    private int[] generateReverse(int size)
+    {
+        int[] result = new int[size];
+        for (int i = 0; i < size; i++)
+            result[i] = size - i + 1;
+        Memento.save(result);
+        return result;
     }
 }

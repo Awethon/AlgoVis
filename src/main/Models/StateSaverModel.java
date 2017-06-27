@@ -4,10 +4,6 @@ public class StateSaverModel {
 
     private ArrayList<SortState> sortStates;
 
-    /*public ArrayList<SortState> getStates() {
-        return this.sortStates;
-    }*/
-
     public int size(){
         return sortStates.size();
     }

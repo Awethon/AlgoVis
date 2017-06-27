@@ -1,16 +1,10 @@
 
-public class MergeSortPerformerModel implements ISortPerformer {
-
-    private StateSaverModel saver;
+public class MergeSortPerformerModel extends SortPerformer {
     private int[] sequence;
 
     @Override
     public void setArray(int[] array){
-        this.sequence = array;
-    }
-
-    public MergeSortPerformerModel() {
-        this.saver = new StateSaverModel();
+        sequence = array;
     }
 
     private int[] MergeSort(int[] sequence, int left, int right) {
@@ -23,8 +17,6 @@ public class MergeSortPerformerModel implements ISortPerformer {
             saveState(first, second, left, right, result);
             return result;
         }
-        //int[] result = new int[] { sequence[left] };
-        //saveState(result, null, left, right);
         return new int[] { sequence[left] };
     }
 
@@ -68,8 +60,7 @@ public class MergeSortPerformerModel implements ISortPerformer {
     }
 
     @Override
-    public StateSaverModel performSort() {
+    public void performSort() {
         MergeSort(sequence, 0, sequence.length - 1);
-        return saver;
     }
 }

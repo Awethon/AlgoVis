@@ -21,7 +21,7 @@
     <Separator prefWidth="200.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="160.0" />
     <HBox prefHeight="30.0" spacing="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="165.0">
         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Array size:" />
-        <TextField fx:id="tf" prefWidth="1000.0" />
+        <TextField fx:id="sizeField" prefWidth="1000.0" />
     </HBox>
     <Separator prefWidth="200.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="205.0" />
 

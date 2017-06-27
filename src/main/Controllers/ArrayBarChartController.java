@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
@@ -36,43 +37,69 @@ public class ArrayBarChartController implements IMediator {
 
     @Override
     public void updateChanges(int firstIndex, int secondIndex, int state) {
-        if (first != -1 && second != -1) {
-            array.changeColor(first, "DEFAULT");
-            array.changeColor(second, "DEFAULT");
+        Platform.runLater(() -> {
+            if (first != -1 && second != -1) {
+                array.changeColor(first, "CHART_COLOR_4");
+                array.changeColor(second, "CHART_COLOR_5");
+            }
+            array.changeColor(firstIndex, "green");
+            array.changeColor(secondIndex, "green");
+            first = firstIndex;
+            second = secondIndex;
+        });
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        array.changeColor(firstIndex, "green");
-        array.changeColor(secondIndex, "green");
-        first = firstIndex;
-        second = secondIndex;
     }
 
     @Override
     public void mergePerformed(SortState state) {
         int[] arr = state.getResult();
-        for (int i = state.getLeft(); i <= state.getRight(); i++) {
-            array.set(i, arr[i - state.getLeft()]);
-            array.changeColor(i, "DEFAULT");
+        Platform.runLater(() -> {
+            for (int i = state.getLeft(); i <= state.getRight(); i++) {
+                array.set(i, arr[i - state.getLeft()]);
+                array.changeColor(i, "CHART_COLOR_1");
+            }
+        });
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void mergeStarted(SortState state) {
         int lo = state.getLeft();
-        int mid = state.getFirst().length;
+        int mid = lo + state.getFirst().length;
         int hi = state.getRight();
 
-        for (int i = lo; i < mid; i++) {
-            array.set(i, state.getFirst()[i - lo]);
-            array.changeColor(i, "yellow");
-        }
-        for (int i = mid; i <= hi; i++) {
-            array.set(i, state.getSecond()[i - mid]);
-            array.changeColor(i, "red");
+        Platform.runLater(() -> {
+            for (int i = lo; i < mid; i++) {
+                array.set(i, state.getFirst()[i - lo]);
+                array.changeColor(i, "CHART_COLOR_4");
+            }
+            for (int i = mid; i <= hi; i++) {
+                array.set(i, state.getSecond()[i - mid]);
+                array.changeColor(i, "CHART_COLOR_5");
+            }
+        });
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void resetCalled() {
-
+        Platform.runLater(() -> array.copy(Memento.restore()));
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
