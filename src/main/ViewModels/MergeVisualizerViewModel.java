@@ -116,15 +116,27 @@ public class MergeVisualizerViewModel implements IMediator {
 
         this.generationMode = generationMode;
         if(generationMode.equals("Custom")) {
+            if(startButtonWasClicked) {
+                generateButtonEnabled = false;
+                customFieldEnabled = false;
+                lengthFieldEnabled = false;
+                return;
+            }
             generateButtonEnabled = false;
             customFieldEnabled = true;
             lengthFieldEnabled = false;
             return;
         }
         customFieldEnabled = false;
-        if(sequenceLength != 0)
+        if(sequenceLength != 0 && !startButtonWasClicked) {
             generateButtonEnabled = true;
-        lengthFieldEnabled = true;
+            lengthFieldEnabled = true;
+        }
+        else {
+            generateButtonEnabled = false;
+            lengthFieldEnabled = false;
+        }
+
         //this.generationMode = generationMode;
     }
     //Вызывается при нажатии startVisualize
@@ -155,7 +167,7 @@ public class MergeVisualizerViewModel implements IMediator {
     }
 
     /**
-     * Sounds good, doesn't work. Нужно разобраться с прохождением по шагам.
+     *
      */
     public void nextStep() {
         abortButtonEnabled = true;
@@ -177,6 +189,8 @@ public class MergeVisualizerViewModel implements IMediator {
     }
     //Вызывается при нажатии previous
     public void previousStep() {
+        startButtonEnabled = true;
+        nextButtonEnabled = true;
         visualizerModel.previousStep();
         if(visualizerModel.getCurrentState() == 0)
             previousButtonEnabled = false;
@@ -208,6 +222,10 @@ public class MergeVisualizerViewModel implements IMediator {
 
     @Override
     public void mergePerformed(SortState sortState) {
+        if(visualizerModel.getCurrentState() == model.size()) {
+            pauseButtonEnabled = false;
+            startButtonEnabled = true;
+        }
         view.mergePerformed(sortState);
     }
 
