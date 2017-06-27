@@ -6,7 +6,7 @@ public class SequenceGenerator implements ISequenceGenerator {
     public int[] generate(String generationMode, int size) {
         if(generationMode.equals("Random"))
             return generateRandom(size);
-        else if(generationMode.equals("Almost sorted"))
+        if(generationMode.equals("Almost sorted"))
             return generateAlmostSorted(size);
         else
             return generateReverse(size);
@@ -17,7 +17,7 @@ public class SequenceGenerator implements ISequenceGenerator {
         Random random = new Random();
         int[] result = new int[size];
         for (int i = 0; i < size; i++)
-            result[i] = random.nextInt(size);
+            result[i] = random.nextInt(size)+1;
         return result;
     }
 
@@ -35,8 +35,8 @@ public class SequenceGenerator implements ISequenceGenerator {
         int[] result = new int[size];
         for (int i = 0; i < size-1; i++)
             result[i] = i;
-
-        result[random.nextInt(size)] = random.nextInt(size);
+        for (int i = 1; i < size/5; i++)
+        result[random.nextInt(size)] = random.nextInt(size)+1;
 
         return result;
     }
