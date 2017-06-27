@@ -47,7 +47,7 @@ public class ArrayBarChartController implements IMediator{
             second = secondIndex;
         });
         try {
-            Thread.sleep(10);
+            Thread.sleep(50);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -81,11 +81,11 @@ public class ArrayBarChartController implements IMediator{
         Platform.runLater(() -> {
             for (int i = 0; i < state.getFirst().length; i++) {
                 array.set(i + state.getLeft(), state.getFirst()[i]);
-                //array.changeColor(i, "yellow");
+                //array.changeColor(i, "orange");
             }
             for (int i = 0; i < state.getSecond().length; i++) {
                 array.set(i + state.getLeft() + state.getFirst().length, state.getSecond()[i]);
-                //array.changeColor(i, "red");
+                //array.changeColor(i, "orange");
             }
         });
         try {
@@ -94,8 +94,6 @@ public class ArrayBarChartController implements IMediator{
             e.printStackTrace();
         }
     }
-
-
 
     @Override
     public void resetCalled() {

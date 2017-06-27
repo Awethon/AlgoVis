@@ -13,7 +13,7 @@ public class ControlBarController {
     //@FXML
     //private ControlBarController controlBarController;
     @FXML
-    private TextField tf;
+    private TextField sizeTextField;
     @FXML
     private Button startButton;
     @FXML
@@ -27,10 +27,13 @@ public class ControlBarController {
     @FXML
     private Button genButton;
 
-    private ToggleGroup tg;
-    private TextField textArray;
+    private ToggleGroup toggleMenu;
+    private TextField customTextArray;
     public volatile MergeVisualizerViewModel viewModel;
     private String lengthFieldText = "";
+
+    private Button previousButton;
+
     @FXML
     void initialize() {
         viewModel = new MergeVisualizerViewModel();
@@ -43,25 +46,25 @@ public class ControlBarController {
         resetButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/rotate.png"))));
 
         RadioButton[] rbs = new RadioButton[4];
-        tg = new ToggleGroup();
+        toggleMenu = new ToggleGroup();
         rbs[0] = new RadioButton("Random");
         rbs[1] = new RadioButton("Almost sorted");
         rbs[2] = new RadioButton("Reversed");
         rbs[3] = new RadioButton("Custom");
-        tg.getToggles().addAll(rbs);
+        toggleMenu.getToggles().addAll(rbs);
         rbs[0].setSelected(true);
         radioVBox.getChildren().addAll(rbs);
-        textArray = new TextField();
-        radioVBox.getChildren().add(textArray);
-        textArray.setDisable(true);
+        customTextArray = new TextField();
+        radioVBox.getChildren().add(customTextArray);
+        customTextArray.setDisable(true);
 
-        tg.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+        toggleMenu.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             bind();
             backBind();
         });
 
 
-        tf.textProperty().addListener((observable, oldValue, newValue) -> {
+        sizeTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             lengthFieldText = newValue;
             bind();
             backBind();
@@ -85,6 +88,12 @@ public class ControlBarController {
 
         setButtonHandler(nextButton, (e) -> {
             viewModel.nextStep();
+            //viewModel.previousStep();
+            backBind();
+        });
+
+        setButtonHandler(previousButton, (e) ->{
+            viewModel.previousStep();
             backBind();
         });
 
@@ -95,13 +104,13 @@ public class ControlBarController {
     }
 
     private void bind() {
-        viewModel.setSequenceLength(tf.getText());
-        viewModel.setGenerationMode(((RadioButton)tg.getSelectedToggle()).getText());
+        viewModel.setSequenceLength(sizeTextField.getText());
+        viewModel.setGenerationMode(((RadioButton) toggleMenu.getSelectedToggle()).getText());
     }
 
     private void backBind() {
-        textArray.setDisable(!viewModel.isCustomFieldEnabled());
-        tf.setDisable(!viewModel.isLengthFieldEnabled());
+        customTextArray.setDisable(!viewModel.isCustomFieldEnabled());
+        sizeTextField.setDisable(!viewModel.isLengthFieldEnabled());
         genButton.setDisable(!viewModel.isGenerateButtonEnabled());
         startButton.setDisable(!viewModel.isStartButtonEnabled());
         pauseButton.setDisable(!viewModel.isPauseButtonEnabled());
@@ -117,7 +126,7 @@ public class ControlBarController {
     }
 
     public TextField getTextField() {
-        return tf;
+        return sizeTextField;
     }
 
     public void genButtonSetHandler(EventHandler<ActionEvent> value) {
@@ -129,11 +138,11 @@ public class ControlBarController {
     }
 
     public Toggle getSelectedToggle(){
-        return tg.getSelectedToggle();
+        return toggleMenu.getSelectedToggle();
     }
 
-    public TextField getTextArray() {
-        return textArray;
+    public TextField getCustomTextArray() {
+        return customTextArray;
     }
 
     public Button getGenButton() {

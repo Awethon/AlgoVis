@@ -11,10 +11,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/rootView.fxml"));
         primaryStage.setTitle("AlgoVis [Merge Sort]");
         primaryStage.setScene(new Scene(root, 900, 600));
-        primaryStage.setMinWidth(600);
-        primaryStage.setMinHeight(400);
-        primaryStage.setMaxWidth(1200);
-        primaryStage.setMaxHeight(800);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

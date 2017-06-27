@@ -160,11 +160,26 @@ public class MergeVisualizerViewModel implements IMediator {
     public void nextStep() {
         abortButtonEnabled = true;
         previousButtonEnabled = true;
+        generateButtonEnabled = false;
+        lengthFieldEnabled = false;
+        if(visualizerModel.getCurrentState() == model.size()) {
+            nextButtonEnabled = false;
+            startButtonEnabled = false;
+        }
+        if(!startButtonWasClicked){
+            startButtonWasClicked = true;
+            setVisualizerModel(new MergeVisualizerModel(this));
+            visualizerModel.setSortStates(model);
+            visualizerModel.pause();
+            visualizerModel.start();
+        }
         visualizerModel.nextStep();
     }
     //Вызывается при нажатии previous
     public void previousStep() {
-
+        visualizerModel.previousStep();
+        if(visualizerModel.getCurrentState() == 0)
+            previousButtonEnabled = false;
     }
     //Вызывается при нажатии abort
     public void abort() {
