@@ -4,6 +4,7 @@ public class MergeSortPerformerModel extends SortPerformer {
 
     @Override
     public void setArray(int[] array){
+        saver.clear();
         sequence = array;
     }
 

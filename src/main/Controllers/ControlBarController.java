@@ -1,6 +1,11 @@
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -35,6 +40,8 @@ public class ControlBarController {
 
     MergeVisualizerModel model;
 
+    BooleanProperty visEnd = new SimpleBooleanProperty(false);
+
     @FXML
     void initialize() {
         startButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/play3.png"))));
@@ -68,11 +75,15 @@ public class ControlBarController {
     private void initializeEventHandlers() {
         tg.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if(getSelectedMode().equals("Custom")) {
-                setEnabled(sizeField,              false);
-                setEnabled(customTextArray, true);
-                setEnabled(genButton,       false);
+                if(startButtonClicked) {
+                    setEnabled(customTextArray, false);
+                } else {
+                    setEnabled(customTextArray, true);
+                }
+                setEnabled(sizeField, false);
+                setEnabled(genButton, false);
             } else {
-                setEnabled(sizeField,              true);
+                setEnabled(sizeField,       true);
                 setEnabled(customTextArray, false);
             }
         });
@@ -81,12 +92,13 @@ public class ControlBarController {
     void initializeControlPanelHandlers(IMediator mediator) {
 
         startButton.setOnAction(e -> {
-            model = new MergeVisualizerModel(mediator);
             if(startButtonClicked)
                 model.continueProcess();
             else {
+                model = new MergeVisualizerModel(mediator);
                 startButtonClicked = true;
                 model.setSortStates(saver);
+                visEnd.bind(model.getVisualizationOverProperty());
                 model.start();
             }
             setEnabled(startButton, false);
@@ -106,7 +118,9 @@ public class ControlBarController {
 
         // TODO: 26.06.2017 dis shet
         prevButton.setOnAction(e -> {
-
+            model.previousStep();
+            setEnabled(startButton, true);
+            setEnabled(nextButton,  true);
         });
 
         nextButton.setOnAction(e -> {
@@ -125,6 +139,20 @@ public class ControlBarController {
             setEnabled(prevButton,  false);
             setEnabled(nextButton,  true);
             setEnabled(resetButton, false);
+        });
+
+        customTextArray.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.matches("\\d{1,3}(\\s\\d{1,3})*\\s?")) {
+                setEnabled(genButton, true);
+            } else {
+                Notifications.create().title("Parse error").text("Field must be filled with numbers from 0 to 999 separated with spaces").showError();
+                setEnabled(genButton, false);
+            }
+        });
+
+        visEnd.addListener((observable, oldValue, newValue) -> {
+            setEnabled(startButton, true);
+            setEnabled(pauseButton, false);
         });
     }
 
@@ -151,7 +179,12 @@ public class ControlBarController {
         genButton.setOnAction(e -> {
 
             SortPerformer sorter = new MergeSortPerformerModel();
-            int[] arr = new IntArrayGenerator().generate(getParsedArraySize(), getSelectedMode());
+            int[] arr;
+            if (getSelectedMode().equals("Custom")) {
+                arr = getCustomArray();
+            } else {
+                arr = new IntArrayGenerator().generate(getParsedArraySize(), getSelectedMode());
+            }
             array.copy(arr);
             sorter.setArray(arr);
             sorter.performSort();
@@ -161,8 +194,16 @@ public class ControlBarController {
         });
     }
 
-    public TextField getCustomTextArray() {
-        return customTextArray;
+    public int[] getCustomArray() {
+        if (customTextArray.getText().matches("\\d{1,3}(\\s\\d{1,3})*\\s?")) {
+            String[] textArr = customTextArray.getText().split(" ");
+            int[] arr = new int[textArr.length];
+            for (int i = 0; i < textArr.length; i++) {
+                arr[i] = Integer.parseInt(textArr[i]);
+            }
+            return arr;
+        }
+        return null;
     }
 
     public String getSelectedMode() {

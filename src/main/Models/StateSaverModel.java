@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class StateSaverModel {
 
-    private ArrayList<SortState> sortStates;
+    private volatile ArrayList<SortState> sortStates;
 
     public int size(){
         return sortStates.size();
@@ -18,5 +18,9 @@ public class StateSaverModel {
 
     public void saveState(SortState sortState) {
         this.sortStates.add(sortState);
+    }
+
+    public void clear() {
+        if(sortStates != null) sortStates.clear();
     }
 }

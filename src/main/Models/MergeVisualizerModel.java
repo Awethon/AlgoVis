@@ -1,67 +1,82 @@
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.SimpleBooleanProperty;
+
 public class MergeVisualizerModel extends AbstractVisualizerModel {
 
     private volatile int currentState;
     private volatile boolean onNextState = false;
     private volatile boolean onPreviousState = false;
-    private volatile boolean onPause;
+    private volatile boolean onPause = false;
     private volatile boolean onAbortion = false;
-    private IMediator mediator;
-    //private StateSaverModel states;
+    private volatile IMediator mediator;
+
+    private SimpleBooleanProperty done = new SimpleBooleanProperty(false);
 
     public MergeVisualizerModel(IMediator mediator) {
         currentState = 0;
-        onPause = true;
+        onAbortion = false;
+        onNextState = false;
+        onPreviousState = false;
+        onPause = false;
         onAbortion = false;
         this.mediator = mediator;
     }
 
     private void mergePerform(){
 
-        for(currentState = 0; currentState < states.size(); ++currentState) {
+        for(currentState = 0; currentState < states.size() && !onAbortion; ++currentState) {
             SortState state = states.getState(currentState);
-            int[] first = state.getFirst(), second = state.getSecond();
-            int iter1 = 0, iter2 = 0, firstLength = first.length, secondLength = second.length,
-                    left = state.getLeft(), targetIter1, targetIter2;
-            if (onAbortion) return;
             mediator.mergeStarted(state);
-            if (checkNextState(state)) continue;
-            while (iter1 < firstLength && iter2 < secondLength) {
-                if(sleepOnPause())
-                    return;
-                if(checkNextState(state))
-                    continue;
-                if (onAbortion) {
-                    return;
-                }
-                if (first[iter1] <= second[iter2]) {
-                    iter1++;
-                } else {
-                    iter2++;
-                }
-                doStuff(iter1, iter2, firstLength, secondLength, left);
+            if (makeIterate(state)) return;
+            if (onNextState) {
+                currentState--;
+                onNextState = false;
+                continue;
             }
-            while (iter1 < firstLength) {
-                if(sleepOnPause())
-                    return;
-                if(checkNextState(state))
-                    continue;
-                if (onAbortion)
-                    return;
-                iter1++;
-                doStuff(iter1, iter2, firstLength, secondLength, left);
-            }
-            while (iter2 < secondLength) {
-                if(sleepOnPause())
-                    return;
-                if(checkNextState(state))
-                    continue;
-                if (onAbortion)
-                    return;
-                iter2++;
-                doStuff(iter1, iter2, firstLength, secondLength, left);
+            if (onPreviousState){
+                currentState--;
+                onPreviousState = false;
+                continue;
             }
             mediator.mergePerformed(state);
         }
+        done.set(true);
+    }
+
+    private boolean makeIterate(SortState state){
+        int[] first = state.getFirst();
+        int[] second = state.getSecond();
+        int iter1 = 0, iter2 = 0, firstLength = first.length, secondLength = second.length, left = state.getLeft();
+        while (iter1 < firstLength && iter2 < secondLength && !onNextState && !onPreviousState) {
+            if(sleepOnPause())
+                return true;
+            if(onAbortion)
+                return true;
+            if (first[iter1] <= second[iter2]) {
+                iter1++;
+            } else {
+                iter2++;
+            }
+            doStuff(iter1, iter2, firstLength, secondLength, left);
+        }
+        while (iter1 < firstLength && !onNextState && !onPreviousState) {
+            if(sleepOnPause())
+                return true;
+            if (onAbortion)
+                return true;
+            iter1++;
+            doStuff(iter1, iter2, firstLength, secondLength, left);
+        }
+
+        while (iter2 < secondLength && !onNextState && !onPreviousState) {
+            if(sleepOnPause())
+                return true;
+            if (onAbortion)
+                return true;
+            iter2++;
+            doStuff(iter1, iter2, firstLength, secondLength, left);
+        }
+        return false;
     }
 
     private void doStuff(int iter1, int iter2, int firstLength, int secondLength, int left) {
@@ -100,15 +115,7 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
     }
 
     @Override
-    public void run(){
-        onPause = false;
-        mergePerform();
-    }
-
-    @Override
-    public void startVisualize() {
-        mergePerform();
-    }
+    public void run(){ mergePerform(); }
 
     @Override
     public void pause() {
@@ -121,13 +128,26 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
     }
 
     @Override
-    public void nextStep() {
-        onPause = false;
+    public void previousStep() {
+        if(currentState > 0) {
+            SortState state = states.getState(currentState);
+            mediator.mergeStarted(state);
+            --currentState;
+            state = states.getState(currentState);
+            mediator.mergeStarted(state);
+        }
+        onPreviousState = true;
     }
 
     @Override
-    public void previousStep() {
-
+    public void nextStep() {
+        //onPause = true;
+        if(currentState < states.size()) {
+            SortState state = states.getState(currentState);
+            mediator.mergePerformed(state);
+            ++currentState;
+        }
+        onNextState = true;
     }
 
     @Override
@@ -135,5 +155,14 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
         onAbortion = true;
         mediator.resetCalled();
         interrupt();
+    }
+
+    @Override
+    public int getCurrentState() {
+        return currentState;
+    }
+
+    public BooleanBinding getVisualizationOverProperty() {
+        return done.isEqualTo(new SimpleBooleanProperty(true));
     }
 }
