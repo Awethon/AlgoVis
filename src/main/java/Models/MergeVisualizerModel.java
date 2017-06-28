@@ -1,5 +1,6 @@
 package Models;
 
+import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 
@@ -139,17 +140,26 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
             mediator.mergeStarted(state);
         }
         onPreviousState = true;
+
+        Platform.runLater(() -> {
+            SortState state = states.getState(currentState);
+            mediator.fixColor(state);
+        });
     }
 
     @Override
     public void nextStep() {
-        //onPause = true;
         if(currentState < states.size()) {
             SortState state = states.getState(currentState);
             mediator.mergePerformed(state);
             ++currentState;
         }
         onNextState = true;
+
+        Platform.runLater(() -> {
+            SortState state = states.getState(currentState);
+            mediator.fixColor(state);
+        });
     }
 
     @Override
@@ -163,6 +173,7 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
     public int getCurrentState() {
         return currentState;
     }
+
 
     public BooleanBinding getVisualizationOverProperty() {
         return done.isEqualTo(new SimpleBooleanProperty(true));

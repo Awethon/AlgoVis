@@ -22,7 +22,11 @@ public class ArrayBarChartController implements IMediator {
     private int first = -1;
     private int second = -1;
 
-
+    
+    final private String DEFAULT = "black";
+    final private String LEFT = "CHART_COLOR_4";
+    final private String RIGHT = "CHART_COLOR_5";
+    final private String CURRENT_POSITION = "chartreuse";
     @FXML
     public void initialize() {
         bc.setLegendVisible(false);
@@ -47,15 +51,15 @@ public class ArrayBarChartController implements IMediator {
     @Override
     public void updateChanges(int firstIndex, int secondIndex, int state) {
         Platform.runLater(() -> {
-            if (first != -1) array.changeColor(first, "CHART_COLOR_4");
-            if (second != -1) array.changeColor(second, "CHART_COLOR_5");
-            array.changeColor(firstIndex, "green");
-            array.changeColor(secondIndex, "green");
+            if (first != -1) array.changeColor(first, LEFT);
+            if (second != -1) array.changeColor(second, RIGHT);
+            array.changeColor(firstIndex, CURRENT_POSITION);
+            array.changeColor(secondIndex, CURRENT_POSITION);
             first = firstIndex;
             second = secondIndex;
         });
         try {
-            Thread.sleep(100);
+            Thread.sleep(300);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -63,8 +67,8 @@ public class ArrayBarChartController implements IMediator {
 
     @Override
     public void mergePerformed(SortState state) {
-        if (first != -1) array.changeColor(first, "CHART_COLOR_1");
-        if (second != -1) array.changeColor(second, "CHART_COLOR_1");
+        if (first != -1) array.changeColor(first, DEFAULT);
+        if (second != -1) array.changeColor(second, DEFAULT);
         first = -1;
         second = -1;
         Platform.runLater(() -> {
@@ -72,7 +76,7 @@ public class ArrayBarChartController implements IMediator {
             int[] arr = state.getResult();
             for (int i = state.getLeft(); i <= state.getRight(); i++) {
                 array.set(i, arr[i - state.getLeft()]);
-                array.changeColor(i, "CHART_COLOR_1");
+                array.changeColor(i, DEFAULT);
             }
         });
         try {
@@ -84,8 +88,8 @@ public class ArrayBarChartController implements IMediator {
 
     @Override
     public void mergeStarted(SortState state) {
-        if (first != -1) array.changeColor(first, "CHART_COLOR_1");
-        if (second != -1) array.changeColor(second, "CHART_COLOR_1");
+        if (first != -1) array.changeColor(first, DEFAULT);
+        if (second != -1) array.changeColor(second, DEFAULT);
         first = -1;
         second = -1;
 
@@ -101,11 +105,11 @@ public class ArrayBarChartController implements IMediator {
             createMergeCups(minX, midX, maxX);
             for (int i = lo; i < mid; i++) {
                 array.set(i, state.getFirst()[i - lo]);
-                array.changeColor(i, "CHART_COLOR_4");
+                array.changeColor(i, LEFT);
             }
             for (int i = mid; i <= hi; i++) {
                 array.set(i, state.getSecond()[i - mid]);
-                array.changeColor(i, "CHART_COLOR_5");
+                array.changeColor(i, RIGHT);
             }
         });
         try {
@@ -139,5 +143,25 @@ public class ArrayBarChartController implements IMediator {
         text.setTranslateY(10.0);
         text.setTranslateX(minX);
         bottomPane.getChildren().addAll(cupLine, one, two, three, text);
+    }
+
+    @Override
+    public void fixColor(SortState state) {
+        int lo = state.getLeft();
+        int mid = lo + state.getFirst().length;
+        int hi = state.getRight();
+
+        for (int i = 0; i < array.size(); i++) {
+            array.changeColor(i, DEFAULT);
+        }
+        for (int i = lo; i < mid; i++) {
+            array.changeColor(i, LEFT);
+        }
+        for (int i = mid; i <= hi; i++) {
+            array.changeColor(i, RIGHT);
+        }
+        array.changeColor(state.getLeft(), CURRENT_POSITION);
+        array.changeColor(state.getLeft() + state.getFirst().length, CURRENT_POSITION);
+
     }
 }

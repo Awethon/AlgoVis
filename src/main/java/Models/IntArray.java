@@ -4,6 +4,10 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 
 public class IntArray {
+    final private String DEFAULT = "black";
+
+
+
     private XYChart.Series<String, Integer> arraySeries = new XYChart.Series<>();
 
     public IntArray() {
@@ -23,6 +27,7 @@ public class IntArray {
     }
     public void addLast(int value) {
         arraySeries.getData().add(new XYChart.Data<>(Integer.toString(size()),  value));
+
     }
 
     public void updateBarChart(BarChart<String, Integer> bc) {
@@ -42,6 +47,9 @@ public class IntArray {
         clear();
         for (int item : arr) {
             addLast(item);
+        }
+        for (int i = 0; i < size(); i++) {
+            changeColor(i, DEFAULT);
         }
     }
 
