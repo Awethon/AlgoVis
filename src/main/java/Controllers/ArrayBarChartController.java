@@ -59,7 +59,7 @@ public class ArrayBarChartController implements IMediator {
             second = secondIndex;
         });
         try {
-            Thread.sleep(300);
+            Thread.sleep(100); // скорость работы
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

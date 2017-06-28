@@ -23,4 +23,9 @@
     <Button fx:id="genButton" disable="true" mnemonicParsing="false" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="330.0" text="Generate"/>
     <Separator prefWidth="200.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="360.0" />
 
+    <VBox fx:id="helpVBox" spacing="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="360.0"/>
+    <Separator prefWidth="500.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="460.0" />
+    <Button fx:id="helpButton" disable="true" mnemonicParsing="false" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="470.0" text="help"/>
+    <Separator prefWidth="500.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="500.0" />
+
 </AnchorPane>
