@@ -1,11 +1,13 @@
+package Models;
+
 public class Memento {
     private static int[] meme;
 
-    static void save(int[] arr) {
+    public static void save(int[] arr) {
         meme = arr.clone();
     }
 
-    static int[] restore() {
+    public static int[] restore() {
         return meme;
     }
 }

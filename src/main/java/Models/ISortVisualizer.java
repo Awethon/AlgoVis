@@ -1,3 +1,5 @@
+package Models;
+
 public interface ISortVisualizer {
     void pause();
     void continueProcess();

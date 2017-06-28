@@ -1,3 +1,5 @@
+package Models;
+
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 
@@ -95,7 +97,7 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
     private boolean sleepOnPause() {
         while (onPause) {
             try {
-                Thread.sleep(1000);
+                sleep(1000);
             } catch (InterruptedException e) {
                 mediator.resetCalled();
                 return true;

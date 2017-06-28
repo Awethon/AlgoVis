@@ -1,3 +1,4 @@
+package Models;
 
 public abstract class AbstractVisualizerModel extends Thread implements ISortVisualizer {
 

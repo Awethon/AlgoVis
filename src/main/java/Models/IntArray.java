@@ -1,3 +1,5 @@
+package Models;
+
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 

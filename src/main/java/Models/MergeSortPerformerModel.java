@@ -1,3 +1,4 @@
+package Models;
 
 public class MergeSortPerformerModel extends SortPerformer {
     private int[] sequence;

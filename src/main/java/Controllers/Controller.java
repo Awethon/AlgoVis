@@ -1,3 +1,6 @@
+package Controllers;
+
+import Models.Command;
 import javafx.fxml.FXML;
 
 public class Controller {

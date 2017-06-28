@@ -1,3 +1,9 @@
+package Controllers;
+
+import Models.IMediator;
+import Models.IntArray;
+import Models.Memento;
+import Models.SortState;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
