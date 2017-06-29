@@ -8,8 +8,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/helpView.fxml"));
-
+        Parent root = FXMLLoader.load(getClass().getResource("/rootView.fxml"));
         primaryStage.setTitle("AlgoVis [Merge Sort]");
         primaryStage.setScene(new Scene(root, 900, 600));
         primaryStage.setMinWidth(600);

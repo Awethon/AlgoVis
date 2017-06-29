@@ -3,8 +3,12 @@ package Controllers;
 import Models.*;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -12,7 +16,10 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
+
+import java.io.IOException;
 
 
 public class ControlBarController {
@@ -33,6 +40,8 @@ public class ControlBarController {
     private VBox radioVBox;
     @FXML
     private Button genButton;
+    @FXML
+    private Button helpButton;
 
     private ToggleGroup tg;
     private TextField customTextArray;
@@ -44,6 +53,10 @@ public class ControlBarController {
     MergeVisualizerModel model;
 
     BooleanProperty visEnd = new SimpleBooleanProperty(false);
+
+    Stage helpStage = new Stage();
+
+    Parent root = null;
 
     @FXML
     void initialize() {
@@ -69,6 +82,20 @@ public class ControlBarController {
         radioVBox.getChildren().add(customTextArray);
 
         initializeEventHandlers();
+
+        setEnabled(helpButton, true);
+
+        try {
+            root = FXMLLoader.load(getClass().getResource("/helpView.fxml"));
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        helpStage.setTitle("AlgoVis HELP [Merge Sort]");
+        helpStage.setScene(new Scene(root, 500, 600));
+        helpStage.setMinWidth(600);
+        helpStage.setMinHeight(400);
+        helpStage.setMaxWidth(1200);
+        helpStage.setMaxHeight(800);
     }
 
     private static void setEnabled(Node node, boolean state) {
@@ -156,6 +183,10 @@ public class ControlBarController {
         visEnd.addListener((observable, oldValue, newValue) -> {
             setEnabled(startButton, false);
             setEnabled(pauseButton, false);
+        });
+
+        helpButton.setOnAction(e -> {
+            helpStage.show();
         });
     }
 
