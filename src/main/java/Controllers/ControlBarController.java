@@ -3,7 +3,6 @@ package Controllers;
 import Models.*;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -91,10 +90,10 @@ public class ControlBarController {
             e1.printStackTrace();
         }
         helpStage.setTitle("AlgoVis HELP [Merge Sort]");
-        helpStage.setScene(new Scene(root, 500, 400));
+        helpStage.setScene(new Scene(root, 500, 600));
         helpStage.setMinWidth(600);
         helpStage.setMinHeight(400);
-        helpStage.setMaxWidth(1200);
+        helpStage.setMaxWidth(800);
         helpStage.setMaxHeight(800);
     }
 
@@ -191,12 +190,11 @@ public class ControlBarController {
         });
     }
 
-    void setArraySizeFieldHandler(Command command) {
+    void setArraySizeFieldHandler() {
         sizeField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.length() < 9 && newValue.matches("\\d+$")) {
                 Integer parsedArraySize = Integer.parseInt(newValue);
                 if (parsedArraySize >= 0 && parsedArraySize <= 250) {
-                    command.execute();
                     genButton.setDisable(false);
                 } else {
                     genButton.setDisable(true);

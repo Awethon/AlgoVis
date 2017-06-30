@@ -1,6 +1,5 @@
 package Controllers;
 
-import Models.Command;
 import javafx.fxml.FXML;
 
 public class Controller {
@@ -12,28 +11,8 @@ public class Controller {
 
     @FXML
     public void initialize() {
-
-        controlBarController.setArraySizeFieldHandler(new BarChartUpdate());
+        controlBarController.setArraySizeFieldHandler();
         controlBarController.initializeControlPanelHandlers(arrayBarChartController);
         controlBarController.setGenButtonHandler(arrayBarChartController.getArray());
     }
-
-
-    class BarChartUpdate implements Command {
-        private void updateBarChart() {
-            Integer size = controlBarController.getParsedArraySize();
-            arrayBarChartController.getArray().clear();
-            arrayBarChartController.getBC().setCategoryGap(150.0 / size);
-            arrayBarChartController.getBC().layout();
-            for (int i = 0; i < size; i++) {
-                arrayBarChartController.getArray().addLast(i + 1);
-            }
-        }
-
-        @Override
-        public void execute() {
-            updateBarChart();
-        }
-    }
-
 }

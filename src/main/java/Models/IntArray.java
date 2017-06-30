@@ -1,5 +1,6 @@
 package Models;
 
+import javafx.collections.ListChangeListener;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 
@@ -32,6 +33,7 @@ public class IntArray {
 
     public void updateBarChart(BarChart<String, Integer> bc) {
         bc.getData().addAll(arraySeries);
+        addHandler(bc);
     }
 
     public void clear() {
@@ -56,5 +58,12 @@ public class IntArray {
     public XYChart.Data<String, Integer> getData(int i) {
         if (i < 0 || i >= size()) throw new ArrayIndexOutOfBoundsException();
         return arraySeries.getData().get(i);
+    }
+
+    private void addHandler(BarChart<String, Integer> bc) {
+        arraySeries.getData().addListener((ListChangeListener<XYChart.Data<String, Integer>>) c -> {
+            bc.setCategoryGap(150.0 / bc.getData().get(0).getData().size());
+            bc.layout();
+        });
     }
 }
