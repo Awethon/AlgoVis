@@ -91,7 +91,7 @@ public class ControlBarController {
             e1.printStackTrace();
         }
         helpStage.setTitle("AlgoVis HELP [Merge Sort]");
-        helpStage.setScene(new Scene(root, 500, 600));
+        helpStage.setScene(new Scene(root, 500, 400));
         helpStage.setMinWidth(600);
         helpStage.setMinHeight(400);
         helpStage.setMaxWidth(1200);
