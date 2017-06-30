@@ -22,12 +22,9 @@ public class Controller {
     class BarChartUpdate implements Command {
         private void updateBarChart() {
             Integer size = controlBarController.getParsedArraySize();
-            arrayBarChartController.getArray().clear();
+            //arrayBarChartController.getArray().clear();
             arrayBarChartController.getBC().setCategoryGap(150.0 / size);
             arrayBarChartController.getBC().layout();
-            for (int i = 0; i < size; i++) {
-                arrayBarChartController.getArray().addLast(i + 1);
-            }
         }
 
         @Override

@@ -33,10 +33,10 @@ public class ArrayBarChartController implements IMediator {
         bc.setAnimated(false);
         bc.setBarGap(0);
         array = new IntArray();
-        array.addLast(1);
-        array.addLast(5);
-        array.addLast(3);
-        array.addLast(4);
+        //array.addLast(1);
+        //array.addLast(5);
+        //array.addLast(3);
+        //array.addLast(4);
         array.updateBarChart(bc);
     }
 
