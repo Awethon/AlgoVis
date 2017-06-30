@@ -112,8 +112,10 @@ public class ControlBarController {
                 setEnabled(sizeField, false);
                 setEnabled(genButton, false);
             } else {
-                setEnabled(genButton, true);
-                setEnabled(sizeField,       true);
+                if (!startButtonClicked) {
+                    setEnabled(genButton, true);
+                    setEnabled(sizeField,       true);
+                }
                 setEnabled(customTextArray, false);
             }
         });
