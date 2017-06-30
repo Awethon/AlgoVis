@@ -123,7 +123,7 @@ public class ArrayBarChartController implements IMediator {
 
     public double getBarX(int i) {
         double width = array.getData(0).getNode().getBoundsInLocal().getMaxX();
-        return 47 + (width + 150.0/array.size())*i;
+        return 49 + (width + 150.0/array.size())*i;
     }
 
     private void createMergeCups(double minX, double midX, double maxX) {
