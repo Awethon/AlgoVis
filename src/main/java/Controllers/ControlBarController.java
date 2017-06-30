@@ -120,6 +120,7 @@ public class ControlBarController {
             setEnabled(nextButton,  true);
         });
 
+        // TODO: 26.06.2017 dis shet
         prevButton.setOnAction(e -> {
             model.previousStep();
             setEnabled(startButton, true);

@@ -18,6 +18,7 @@ public class Controller {
         controlBarController.setGenButtonHandler(arrayBarChartController.getArray());
     }
 
+
     class BarChartUpdate implements Command {
         private void updateBarChart() {
             Integer size = controlBarController.getParsedArraySize();
