@@ -13,14 +13,17 @@ public class IntArray {
     public int size() {
         return arraySeries.getData().size();
     }
+
     public void set(int i, int value) {
         if (i < 0 || i >= size()) throw new ArrayIndexOutOfBoundsException();
         arraySeries.getData().set(i, new XYChart.Data<>(Integer.toString(i), value));
     }
+
     public int get(int i) {
         if (i < 0 || i >= size()) throw new ArrayIndexOutOfBoundsException();
         return arraySeries.getData().get(i).getYValue();
     }
+
     public void addLast(int value) {
         arraySeries.getData().add(new XYChart.Data<>(Integer.toString(size()),  value));
     }

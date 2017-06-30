@@ -62,27 +62,6 @@ public class ArrayBarChartController implements IMediator {
     }
 
     @Override
-    public void mergePerformed(SortState state) {
-        if (first != -1) array.changeColor(first, "CHART_COLOR_1");
-        if (second != -1) array.changeColor(second, "CHART_COLOR_1");
-        first = -1;
-        second = -1;
-        Platform.runLater(() -> {
-            bottomPane.getChildren().clear();
-            int[] arr = state.getResult();
-            for (int i = state.getLeft(); i <= state.getRight(); i++) {
-                array.set(i, arr[i - state.getLeft()]);
-                array.changeColor(i, "CHART_COLOR_1");
-            }
-        });
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public void mergeStarted(SortState state) {
         if (first != -1) array.changeColor(first, "CHART_COLOR_1");
         if (second != -1) array.changeColor(second, "CHART_COLOR_1");
@@ -106,6 +85,27 @@ public class ArrayBarChartController implements IMediator {
             for (int i = mid; i <= hi; i++) {
                 array.set(i, state.getSecond()[i - mid]);
                 array.changeColor(i, "CHART_COLOR_5");
+            }
+        });
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void mergePerformed(SortState state) {
+        if (first != -1) array.changeColor(first, "CHART_COLOR_1");
+        if (second != -1) array.changeColor(second, "CHART_COLOR_1");
+        first = -1;
+        second = -1;
+        Platform.runLater(() -> {
+            bottomPane.getChildren().clear();
+            int[] arr = state.getResult();
+            for (int i = state.getLeft(); i <= state.getRight(); i++) {
+                array.set(i, arr[i - state.getLeft()]);
+                array.changeColor(i, "CHART_COLOR_1");
             }
         });
         try {
