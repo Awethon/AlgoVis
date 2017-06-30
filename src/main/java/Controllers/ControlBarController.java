@@ -135,6 +135,7 @@ public class ControlBarController {
             setEnabled(prevButton,  false);
             setEnabled(nextButton,  false);
             setEnabled(resetButton, true);
+            setEnabled(genButton, false);
         });
 
 
