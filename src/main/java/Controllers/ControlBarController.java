@@ -153,7 +153,7 @@ public class ControlBarController {
         });
 
         visEnd.addListener((observable, oldValue, newValue) -> {
-            setEnabled(startButton, true);
+            setEnabled(startButton, false);
             setEnabled(pauseButton, false);
         });
     }

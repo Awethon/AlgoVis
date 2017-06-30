@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ArrayBarChartController"
+      AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <BarChart  fx:id="bc" prefHeight="600.0" prefWidth="588.0">
+        <xAxis><CategoryAxis side="BOTTOM"/></xAxis>
+        <yAxis><NumberAxis side="LEFT"/></yAxis>
+    </BarChart>
+    <Pane minHeight="70.0" fx:id="bottomPane"/>
+</VBox>

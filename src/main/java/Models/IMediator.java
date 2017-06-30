@@ -36,4 +36,7 @@ public interface IMediator {
      * Вызывается, когда процесс визуализации был прерван методом abort() объекта ISortVisualizer.
      */
     void resetCalled();
+
+
+    void fixColor(SortState state);
 }
