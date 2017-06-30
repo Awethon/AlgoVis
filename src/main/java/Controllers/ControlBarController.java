@@ -112,6 +112,7 @@ public class ControlBarController {
                 setEnabled(sizeField, false);
                 setEnabled(genButton, false);
             } else {
+                setEnabled(genButton, true);
                 setEnabled(sizeField,       true);
                 setEnabled(customTextArray, false);
             }
@@ -136,6 +137,7 @@ public class ControlBarController {
             setEnabled(nextButton,  false);
             setEnabled(resetButton, true);
             setEnabled(genButton, false);
+            setEnabled(sizeField, false);
         });
 
 
@@ -170,6 +172,8 @@ public class ControlBarController {
             setEnabled(prevButton,  false);
             setEnabled(nextButton,  true);
             setEnabled(resetButton, false);
+            setEnabled(genButton, true);
+            setEnabled(sizeField, true);
         });
 
         customTextArray.textProperty().addListener((observable, oldValue, newValue) -> {
