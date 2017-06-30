@@ -111,6 +111,7 @@ public class ControlBarController {
             setEnabled(resetButton, true);
         });
 
+
         pauseButton.setOnAction(e -> {
             model.pause();
             setEnabled(startButton, true);
