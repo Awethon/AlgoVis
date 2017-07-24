@@ -134,6 +134,7 @@ public class ArrayBarChartController implements IMediator {
         Label text = new Label("Merging");
         text.setTranslateY(10.0);
         text.setTranslateX(minX);
+        bottomPane.getChildren().clear();
         bottomPane.getChildren().addAll(cupLine, one, two, three, text);
     }
 

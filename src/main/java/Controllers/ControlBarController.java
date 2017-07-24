@@ -154,14 +154,30 @@ public class ControlBarController {
         // TODO: 26.06.2017 dis shet
         prevButton.setOnAction(e -> {
             model.previousStep();
+            if (model.isAtStart()) setEnabled(prevButton, false);
             setEnabled(startButton, true);
             setEnabled(nextButton,  true);
         });
 
         nextButton.setOnAction(e -> {
+            if (!startButtonClicked) {
+                model = new MergeVisualizerModel(mediator);
+                startButtonClicked = true;
+                model.setSortStates(saver);
+                visEnd.bind(model.getVisualizationOverProperty());
+                model.pause();
+                model.start();
+            }
+            if (model.getCurrentState() + 1 == model.getSize()){
+                setEnabled(nextButton, false);
+            }
+            else {
+                setEnabled(nextButton, true);
+            }
             model.nextStep();
             setEnabled(prevButton,  true);
             setEnabled(resetButton, true);
+            setEnabled(genButton, false);
         });
 
         resetButton.setOnAction(e -> {
@@ -190,6 +206,8 @@ public class ControlBarController {
         visEnd.addListener((observable, oldValue, newValue) -> {
             setEnabled(startButton, false);
             setEnabled(pauseButton, false);
+            setEnabled(nextButton, false);
+            setEnabled(prevButton, true);
         });
 
         helpButton.setOnAction(e -> {
@@ -230,6 +248,7 @@ public class ControlBarController {
             sorter.performSort();
             saver = sorter.getSaver();
             setEnabled(startButton, true);
+            setEnabled(prevButton, false);
             setEnabled(nextButton,  true);
         });
     }

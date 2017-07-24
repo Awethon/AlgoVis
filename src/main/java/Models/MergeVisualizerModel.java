@@ -26,9 +26,15 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
     }
 
     private void mergePerform(){
-
-        for(currentState = 0; currentState < states.size() && !onAbortion; ++currentState) {
-            SortState state = states.getState(currentState);
+        for(currentState = 0; currentState < states.size() + 1 && !onAbortion; ++currentState) {
+            SortState state = null;
+            if(states.size() == currentState){
+                done.set(true);
+                onPause = true;
+                if(sleepOnPause())
+                    return;
+            }
+            state = states.getState(currentState);
             mediator.mergeStarted(state);
             if (makeIterate(state)) return;
             if (onNextState) {
@@ -114,6 +120,7 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
             onPause = true;
             return true;
         }
+        Object o = new Object();
         return false;
     }
 
@@ -133,14 +140,15 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
     @Override
     public void previousStep() {
         if(currentState > 0) {
+            if (currentState == states.size()) --currentState;
             SortState state = states.getState(currentState);
             mediator.mergeStarted(state);
             --currentState;
             state = states.getState(currentState);
             mediator.mergeStarted(state);
+            done.set(false);
         }
         onPreviousState = true;
-
         Platform.runLater(() -> {
             SortState state = states.getState(currentState);
             mediator.fixColor(state);
@@ -153,13 +161,21 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
             SortState state = states.getState(currentState);
             mediator.mergePerformed(state);
             ++currentState;
+            done.set(false);
+            if(currentState < states.size())
+                Platform.runLater(() -> {
+                    mediator.fixColor(states.getState(currentState));
+                });
+        }
+        else {
+            done.set(false);
+            done.set(true);
         }
         onNextState = true;
+    }
 
-        Platform.runLater(() -> {
-            SortState state = states.getState(currentState);
-            mediator.fixColor(state);
-        });
+    public int getSize(){
+        return states.size();
     }
 
     @Override
@@ -172,6 +188,10 @@ public class MergeVisualizerModel extends AbstractVisualizerModel {
     @Override
     public int getCurrentState() {
         return currentState;
+    }
+
+    public boolean isAtStart() {
+        return currentState <= 0;
     }
 
 
